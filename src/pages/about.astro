@@ -1,0 +1,82 @@
+---
+import { getCollection } from 'astro:content';
+import Base from '../layouts/Base.astro';
+import { site } from '../lib/site';
+
+const bands = await getCollection('bands');
+const counts = bands.reduce<Record<string, number>>((acc, b) => {
+  acc[b.data.role] = (acc[b.data.role] ?? 0) + 1;
+  return acc;
+}, {});
+
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+---
+<Base title="About" description="A little about Julian Smith — bassist, flautist, multi-instrumentalist of the Northern Rivers.">
+  <section class="border-b border-[var(--color-rule)]">
+    <div class="mx-auto max-w-6xl px-6 pt-12 pb-8">
+      <p class="eyebrow mb-3">Who's playing</p>
+      <h1 class="font-[var(--font-display)] font-black text-5xl md:text-6xl leading-tight">About Julian</h1>
+    </div>
+  </section>
+
+  <section>
+    <div class="mx-auto max-w-3xl px-6 py-16">
+      <p class="dropcap text-lg leading-relaxed text-[var(--color-ink)]">
+        Julian Smith is a Northern Rivers, NSW musician — based near Lismore — whose working life has spanned
+        New Orleans jazz, Funkafide blues, skiffle, bluegrass, gypsy swing, Hawaiian hapa haole, cosmic country
+        and an Afrobeat band that calls itself Timbuktu. He started in the early 1990s in Bathurst, with a
+        couple of student-era bands at Charles Sturt University, and has been playing in and out of Northern
+        Rivers projects since the mid-2000s.
+      </p>
+
+      <blockquote class="pullquote">
+        &ldquo;{site.bio}&rdquo;
+        <footer class="mt-3 text-sm not-italic font-[var(--font-sans)] uppercase tracking-widest text-[var(--color-muted)]">
+          — Julian, via {site.bioSource && <a href={site.bioSource.url} class="editorial">{site.bioSource.label}</a>}
+        </footer>
+      </blockquote>
+
+      <p class="text-lg leading-relaxed text-[var(--color-ink)]">
+        On stage and on record he plays mostly basses — upright and electric — but also flute, hand
+        percussion, and harmony vocals. He's a core member of around {counts.core ?? 0} active bands and a
+        familiar substitute on bass for several others when their regular player can't make it. Studio
+        session work fills out the rest.
+      </p>
+
+      <p class="text-lg leading-relaxed text-[var(--color-ink)] mt-6">
+        Long-running collaborators include the Funkafide Productions circle (Miss Jodie Digney, Matt Elliott),
+        the trumpet-and-banjo end of the New Orleans community (Cameron Smith, Joe O'Keeffe), and recording
+        engineer Andy Downer at A.D Studio in Lismore.
+      </p>
+    </div>
+  </section>
+
+  <section class="border-t border-[var(--color-rule)] bg-[var(--color-paper-warm)]">
+    <div class="mx-auto max-w-6xl px-6 py-12 grid md:grid-cols-4 gap-8 text-center">
+      {[
+        { n: counts.core ?? 0, l: 'Core bands' },
+        { n: counts.sub ?? 0, l: 'Subs' },
+        { n: counts.session ?? 0, l: 'Sessions' },
+        { n: bands.length, l: 'Projects logged' },
+      ].map((s) => (
+        <div>
+          <p class="font-[var(--font-display)] text-5xl font-black">{s.n}</p>
+          <p class="eyebrow mt-1">{s.l}</p>
+        </div>
+      ))}
+    </div>
+  </section>
+
+  <section>
+    <div class="mx-auto max-w-3xl px-6 py-16">
+      <p class="eyebrow mb-3">A note on the archive</p>
+      <p class="text-[var(--color-ink-soft)] leading-relaxed">
+        Some of the entries in this site are well-documented online — Bandcamp pages, festival listings,
+        Spotify links and so on. Others, particularly the early-1990s Bathurst bands and the more
+        short-lived Northern Rivers projects, survive mostly as memory. Where information is incomplete,
+        the page says so. If you have photos, recordings or notes from any of these projects, please
+        <a href={`${base}/for-hire`} class="editorial">get in touch</a>.
+      </p>
+    </div>
+  </section>
+</Base>

@@ -1,0 +1,86 @@
+---
+import { getCollection } from 'astro:content';
+import Base from '../layouts/Base.astro';
+
+const bands = await getCollection('bands');
+
+type Mention = { name: string; band: string; bandId: string };
+
+const festivals: Mention[] = bands.flatMap((b) =>
+  (b.data.festivals ?? []).map((f) => ({ name: f, band: b.data.name, bandId: b.id }))
+);
+const venues: Mention[] = bands.flatMap((b) =>
+  (b.data.venues ?? []).map((v) => ({ name: v, band: b.data.name, bandId: b.id }))
+);
+
+function group(list: Mention[]) {
+  const map = new Map<string, Mention[]>();
+  for (const m of list) {
+    const key = m.name;
+    map.set(key, [...(map.get(key) ?? []), m]);
+  }
+  return Array.from(map.entries()).sort((a, b) => a[0].localeCompare(b[0]));
+}
+
+const fGrouped = group(festivals);
+const vGrouped = group(venues);
+
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+---
+<Base title="Live & festivals" description="Festivals and venues across Julian's playing career.">
+  <section class="border-b border-[var(--color-rule)]">
+    <div class="mx-auto max-w-6xl px-6 pt-12 pb-8">
+      <p class="eyebrow mb-3">The road</p>
+      <h1 class="font-[var(--font-display)] font-black text-5xl md:text-6xl leading-tight">Live &amp; festivals</h1>
+      <p class="mt-4 max-w-2xl text-lg text-[var(--color-ink-soft)]">
+        Compiled from every band's gig history — festivals on the bigger stages and the venues where the regular work happens. Lithgow to Cairns, Brisbane to Byron, and many a Lismore bowling club along the way.
+      </p>
+    </div>
+  </section>
+
+  <section class="border-b border-[var(--color-rule)]">
+    <div class="mx-auto max-w-6xl px-6 py-12">
+      <div class="flex items-end justify-between mb-6 border-b border-[var(--color-rule)] pb-3">
+        <h2 class="font-[var(--font-display)] text-3xl font-bold">Festivals & highlights</h2>
+        <p class="eyebrow">{fGrouped.length} listed</p>
+      </div>
+      <ul class="grid sm:grid-cols-2 gap-x-8 gap-y-2">
+        {fGrouped.map(([name, mentions]) => (
+          <li class="border-b border-dotted border-[var(--color-rule)] py-2 flex items-baseline justify-between gap-4">
+            <span class="font-[var(--font-display)] text-base">{name}</span>
+            <span class="text-xs text-[var(--color-muted)] font-[var(--font-sans)] text-right">
+              {mentions.map((m, i) => (
+                <span>
+                  <a href={`${base}/bands/${m.bandId}`} class="editorial">{m.band}</a>{i < mentions.length - 1 && ', '}
+                </span>
+              ))}
+            </span>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  <section>
+    <div class="mx-auto max-w-6xl px-6 py-12">
+      <div class="flex items-end justify-between mb-6 border-b border-[var(--color-rule)] pb-3">
+        <h2 class="font-[var(--font-display)] text-3xl font-bold">Venues</h2>
+        <p class="eyebrow">{vGrouped.length} listed</p>
+      </div>
+      <ul class="grid sm:grid-cols-2 gap-x-8 gap-y-2">
+        {vGrouped.map(([name, mentions]) => (
+          <li class="border-b border-dotted border-[var(--color-rule)] py-2 flex items-baseline justify-between gap-4">
+            <span class="font-[var(--font-display)] text-base">{name}</span>
+            <span class="text-xs text-[var(--color-muted)] font-[var(--font-sans)] text-right">
+              {mentions.map((m, i) => (
+                <span>
+                  <a href={`${base}/bands/${m.bandId}`} class="editorial">{m.band}</a>{i < mentions.length - 1 && ', '}
+                </span>
+              ))}
+            </span>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+</Base>

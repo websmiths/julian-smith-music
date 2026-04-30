@@ -1,0 +1,55 @@
+---
+import { site, type GenreKey } from '../lib/site';
+
+interface Props {
+  band: {
+    id: string;
+    data: {
+      name: string;
+      role: 'core' | 'sub' | 'session' | 'video';
+      julianRole: string;
+      genres: string[];
+      accent?: string;
+      era: string;
+      region?: string;
+      blurb: string;
+      confirmed: boolean;
+    };
+  };
+  feature?: boolean;
+}
+
+const { band, feature = false } = Astro.props;
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+const accent = band.data.accent ?? 'jazz';
+---
+<a
+  href={`${base}/bands/${band.id}`}
+  class:list={[
+    'group block border border-[var(--color-rule)] bg-[var(--color-paper)] p-6 hover:border-[var(--color-ink)] transition-colors',
+    feature && 'md:p-8',
+  ]}
+  style={`--accent: var(--color-${accent})`}
+>
+  <div class="flex items-start justify-between gap-4 mb-3">
+    <span class="eyebrow" style="color: var(--accent)">{site.roleLabels[band.data.role]}</span>
+    {!band.data.confirmed && <span class="eyebrow text-[var(--color-muted)]" title="More info coming">DRAFT</span>}
+  </div>
+  <h3 class:list={['font-[var(--font-display)] font-bold leading-tight', feature ? 'text-3xl md:text-4xl' : 'text-2xl']}>
+    {band.data.name}
+  </h3>
+  <p class="mt-1 text-sm text-[var(--color-muted)] font-[var(--font-sans)]">
+    {band.data.era}{band.data.region ? ` · ${band.data.region}` : ''}
+  </p>
+  <p class="mt-3 text-[var(--color-ink-soft)] leading-snug">
+    {band.data.blurb}
+  </p>
+  <div class="mt-4 flex flex-wrap gap-1.5">
+    {band.data.genres.map((g) => (
+      <span class="chip">{site.genreLabels[g as GenreKey] ?? g}</span>
+    ))}
+  </div>
+  <p class="mt-4 text-xs font-[var(--font-sans)] uppercase tracking-wider text-[var(--color-muted)]">
+    Julian: <span class="text-[var(--color-ink-soft)] normal-case tracking-normal">{band.data.julianRole}</span>
+  </p>
+</a>

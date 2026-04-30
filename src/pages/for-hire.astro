@@ -1,0 +1,71 @@
+---
+import Base from '../layouts/Base.astro';
+import { site } from '../lib/site';
+
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+---
+<Base title="For hire" description="Subbing, session and live work — Northern Rivers and beyond.">
+  <section class="border-b border-[var(--color-rule)]">
+    <div class="mx-auto max-w-6xl px-6 pt-12 pb-8">
+      <p class="eyebrow mb-3">If you need someone</p>
+      <h1 class="font-[var(--font-display)] font-black text-5xl md:text-6xl leading-tight">For hire</h1>
+      <p class="mt-4 max-w-2xl text-lg text-[var(--color-ink-soft)]">
+        Available for live gigs, festivals, recording sessions and one-off subs. Based in the Northern Rivers, NSW; happy to travel for the right thing.
+      </p>
+    </div>
+  </section>
+
+  <section class="border-b border-[var(--color-rule)]">
+    <div class="mx-auto max-w-6xl px-6 py-12 grid md:grid-cols-3 gap-10">
+      <div>
+        <p class="eyebrow mb-3">Instruments</p>
+        <ul class="space-y-2 font-[var(--font-display)] text-xl">
+          <li>Double bass <span class="text-sm font-[var(--font-sans)] text-[var(--color-muted)]">— upright</span></li>
+          <li>Electric bass <span class="text-sm font-[var(--font-sans)] text-[var(--color-muted)]">— 4 / 5 string</span></li>
+          <li>Flute <span class="text-sm font-[var(--font-sans)] text-[var(--color-muted)]">— C, alto</span></li>
+          <li>Hand percussion <span class="text-sm font-[var(--font-sans)] text-[var(--color-muted)]">— congas etc.</span></li>
+          <li>Harmony vocals</li>
+        </ul>
+      </div>
+      <div>
+        <p class="eyebrow mb-3">Comfortable in</p>
+        <ul class="space-y-2 font-[var(--font-display)] text-xl">
+          <li>Trad &amp; modern jazz</li>
+          <li>Folk, bluegrass, old-time</li>
+          <li>Funk &amp; blues</li>
+          <li>Gypsy swing</li>
+          <li>Country / Americana / cosmic country</li>
+          <li>Afrobeat &amp; world</li>
+          <li>Hawaiian hapa haole</li>
+          <li>Cajun / zydeco</li>
+        </ul>
+      </div>
+      <div>
+        <p class="eyebrow mb-3">Useful for</p>
+        <ul class="space-y-2 font-[var(--font-display)] text-xl">
+          <li>One-off subs when your bass player can't make it</li>
+          <li>Studio sessions — bass &amp; flute</li>
+          <li>Festival pickup bands</li>
+          <li>Live sound for small-to-mid-format gigs</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="mx-auto max-w-3xl px-6 py-16 text-center">
+      <p class="eyebrow mb-3">Get in touch</p>
+      <h2 class="font-[var(--font-display)] font-bold text-4xl mb-6">Email is best</h2>
+      {site.email ? (
+        <a href={`mailto:${site.email}`} class="font-[var(--font-display)] text-2xl editorial">
+          {site.email}
+        </a>
+      ) : (
+        <p class="text-[var(--color-muted)] italic">Contact details to be added.</p>
+      )}
+      <p class="mt-8 text-sm text-[var(--color-ink-soft)] leading-relaxed max-w-xl mx-auto">
+        For a sense of what I sound like in different contexts, the <a href={`${base}/recordings`} class="editorial">recordings</a> page collects releases across every band; the <a href={`${base}/bands`} class="editorial">bands</a> page lets you browse by genre and role.
+      </p>
+    </div>
+  </section>
+</Base>

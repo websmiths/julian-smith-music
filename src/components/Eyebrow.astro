@@ -1,0 +1,8 @@
+---
+interface Props {
+  accent?: string;
+}
+const { accent } = Astro.props;
+const style = accent ? `color: var(--color-${accent})` : undefined;
+---
+<span class="eyebrow" style={style}><slot /></span>

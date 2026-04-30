@@ -1,0 +1,188 @@
+---
+import { getCollection, render } from 'astro:content';
+import Base from '../../layouts/Base.astro';
+import { site, type GenreKey } from '../../lib/site';
+
+export async function getStaticPaths() {
+  const bands = await getCollection('bands');
+  return bands.map((band) => ({ params: { id: band.id }, props: { band } }));
+}
+
+const { band } = Astro.props;
+const { Content } = await render(band);
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+
+const accent = band.data.accent ?? 'jazz';
+const accentVar = `var(--color-${accent})`;
+
+const links = band.data.links ?? {};
+const linkEntries: Array<{ label: string; url: string }> = [];
+if (links.official) linkEntries.push({ label: 'Official site', url: links.official });
+if (links.bandcamp) linkEntries.push({ label: 'Bandcamp', url: links.bandcamp });
+if (links.spotify) linkEntries.push({ label: 'Spotify', url: links.spotify });
+if (links.facebook) linkEntries.push({ label: 'Facebook', url: links.facebook });
+if (links.instagram) linkEntries.push({ label: 'Instagram', url: links.instagram });
+if (links.youtube) linkEntries.push({ label: 'YouTube', url: links.youtube });
+if (links.reverbnation) linkEntries.push({ label: 'ReverbNation', url: links.reverbnation });
+if (links.soundcloud) linkEntries.push({ label: 'SoundCloud', url: links.soundcloud });
+links.other?.forEach((l) => linkEntries.push(l));
+---
+<Base title={band.data.name} description={band.data.blurb}>
+  <article>
+    <!-- Masthead -->
+    <header class="border-b border-[var(--color-rule)]" style={`border-top: 4px solid ${accentVar}`}>
+      <div class="mx-auto max-w-6xl px-6 pt-12 pb-10 grid md:grid-cols-12 gap-8">
+        <div class="md:col-span-8">
+          <p class="eyebrow mb-3" style={`color: ${accentVar}`}>
+            {site.roleLabels[band.data.role]}
+            {!band.data.confirmed && <span class="ml-3 opacity-60">· details pending</span>}
+          </p>
+          <h1 class="font-[var(--font-display)] font-black text-5xl md:text-7xl leading-[0.95] tracking-tight">
+            {band.data.name}
+          </h1>
+          <p class="mt-4 text-lg text-[var(--color-ink-soft)] leading-relaxed max-w-3xl">
+            {band.data.blurb}
+          </p>
+        </div>
+        <aside class="md:col-span-4 md:border-l md:border-[var(--color-rule)] md:pl-6 space-y-4 font-[var(--font-sans)] text-sm">
+          <div>
+            <p class="eyebrow mb-1">Era</p>
+            <p>{band.data.era}</p>
+          </div>
+          {band.data.region && (
+            <div>
+              <p class="eyebrow mb-1">Region</p>
+              <p>{band.data.region}</p>
+            </div>
+          )}
+          <div>
+            <p class="eyebrow mb-1">Julian's role</p>
+            <p>{band.data.julianRole}</p>
+          </div>
+          <div>
+            <p class="eyebrow mb-2">Genres</p>
+            <div class="flex flex-wrap gap-1.5">
+              {band.data.genres.map((g) => (
+                <span class="chip">{site.genreLabels[g as GenreKey] ?? g}</span>
+              ))}
+            </div>
+          </div>
+        </aside>
+      </div>
+    </header>
+
+    <!-- Body -->
+    <div class="mx-auto max-w-6xl px-6 py-12 grid md:grid-cols-12 gap-10">
+      <div class="md:col-span-8 space-y-10">
+        <div class="prose prose-lg max-w-none font-[var(--font-serif)] text-[var(--color-ink)] leading-relaxed">
+          <Content />
+        </div>
+
+        {band.data.quote && (
+          <blockquote class="pullquote" style={`border-left-color: ${accentVar}`}>
+            &ldquo;{band.data.quote.text}&rdquo;
+            {band.data.quote.attribution && (
+              <footer class="mt-3 text-sm not-italic font-[var(--font-sans)] uppercase tracking-widest text-[var(--color-muted)]">
+                — {band.data.quote.attribution}
+              </footer>
+            )}
+          </blockquote>
+        )}
+
+        {band.data.embeds?.youtube && band.data.embeds.youtube.length > 0 && (
+          <section>
+            <p class="eyebrow mb-3">On video</p>
+            <div class="grid sm:grid-cols-2 gap-4">
+              {band.data.embeds.youtube.map((v) => (
+                <div>
+                  <div class="aspect-video bg-[var(--color-ink)]">
+                    <iframe
+                      src={`https://www.youtube-nocookie.com/embed/${v.id}`}
+                      title={v.title || band.data.name}
+                      frameborder="0"
+                      allow="accelerometer; clipboard-write; encrypted-media; picture-in-picture"
+                      allowfullscreen
+                      class="w-full h-full"
+                    ></iframe>
+                  </div>
+                  {v.title && <p class="mt-2 text-sm text-[var(--color-muted)] font-[var(--font-sans)]">{v.title}</p>}
+                </div>
+              ))}
+            </div>
+          </section>
+        )}
+      </div>
+
+      <aside class="md:col-span-4 space-y-8 font-[var(--font-sans)] text-sm">
+        {band.data.members && band.data.members.length > 0 && (
+          <section>
+            <p class="eyebrow mb-2">Line-up</p>
+            <ul class="space-y-1.5 text-[var(--color-ink-soft)]">
+              {band.data.members.map((m) => <li>{m}</li>)}
+            </ul>
+          </section>
+        )}
+
+        {band.data.discography && band.data.discography.length > 0 && (
+          <section>
+            <p class="eyebrow mb-2">Discography</p>
+            <ul class="space-y-3">
+              {band.data.discography.map((d) => (
+                <li>
+                  <p class="font-semibold text-[var(--color-ink)]">
+                    {d.bandcamp ? <a href={d.bandcamp} class="editorial">{d.title}</a> : d.title}
+                    {d.year && <span class="ml-2 text-[var(--color-muted)] font-normal">({d.year})</span>}
+                  </p>
+                  {d.notes && <p class="text-xs text-[var(--color-muted)] mt-0.5">{d.notes}</p>}
+                </li>
+              ))}
+            </ul>
+          </section>
+        )}
+
+        {band.data.festivals && band.data.festivals.length > 0 && (
+          <section>
+            <p class="eyebrow mb-2">Festivals & highlights</p>
+            <ul class="space-y-1 text-[var(--color-ink-soft)]">
+              {band.data.festivals.map((f) => <li>· {f}</li>)}
+            </ul>
+          </section>
+        )}
+
+        {band.data.venues && band.data.venues.length > 0 && (
+          <section>
+            <p class="eyebrow mb-2">Venues</p>
+            <ul class="space-y-1 text-[var(--color-ink-soft)]">
+              {band.data.venues.map((v) => <li>· {v}</li>)}
+            </ul>
+          </section>
+        )}
+
+        {linkEntries.length > 0 && (
+          <section>
+            <p class="eyebrow mb-2">Find them</p>
+            <ul class="space-y-1.5">
+              {linkEntries.map((l) => (
+                <li>
+                  <a href={l.url} class="editorial text-[var(--color-ink-soft)]" target="_blank" rel="noopener">
+                    {l.label} ↗
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </section>
+        )}
+
+        {!band.data.confirmed && (
+          <section class="border border-dashed border-[var(--color-muted)] p-4 text-xs text-[var(--color-muted)]">
+            Some details on this page are awaiting confirmation. If you have photos, recordings or notes, please get in touch.
+          </section>
+        )}
+      </aside>
+    </div>
+
+    <div class="mx-auto max-w-6xl px-6 pb-16">
+      <a href={`${base}/bands`} class="editorial font-[var(--font-sans)] text-sm">← Back to all bands</a>
+    </div>
+  </article>
+</Base>

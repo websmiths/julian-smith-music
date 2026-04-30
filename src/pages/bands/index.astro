@@ -1,0 +1,125 @@
+---
+import { getCollection } from 'astro:content';
+import Base from '../../layouts/Base.astro';
+import BandCard from '../../components/BandCard.astro';
+import { site, type GenreKey } from '../../lib/site';
+
+const bands = (await getCollection('bands')).sort((a, b) => {
+  const ay = a.data.yearStart ?? 0;
+  const by = b.data.yearStart ?? 0;
+  if (ay !== by) return by - ay;
+  return a.data.name.localeCompare(b.data.name);
+});
+
+const allGenres = Array.from(new Set(bands.flatMap((b) => b.data.genres))).sort();
+const allRoles = Array.from(new Set(bands.map((b) => b.data.role)));
+
+const bandsJson = bands.map((b) => ({
+  id: b.id,
+  role: b.data.role,
+  genres: b.data.genres,
+  era: b.data.era,
+  yearStart: b.data.yearStart ?? null,
+}));
+---
+<Base title="Bands" description="Every band Julian Smith has played with — core, sub, session and video — across the Northern Rivers and beyond.">
+  <section class="border-b border-[var(--color-rule)]">
+    <div class="mx-auto max-w-6xl px-6 pt-12 pb-8">
+      <p class="eyebrow mb-3">The catalogue</p>
+      <h1 class="font-[var(--font-display)] font-black text-5xl md:text-6xl leading-tight">Bands</h1>
+      <p class="mt-4 max-w-2xl text-lg text-[var(--color-ink-soft)]">
+        Everything in one place. Filter by role or genre. Some entries are well-documented online; others — particularly the older Bathurst-era projects — survive mostly in memory.
+      </p>
+    </div>
+  </section>
+
+  <section class="border-b border-[var(--color-rule)] bg-[var(--color-paper-warm)] sticky top-0 z-10">
+    <div class="mx-auto max-w-6xl px-6 py-4 flex flex-wrap gap-x-6 gap-y-3 items-center">
+      <div class="flex flex-wrap gap-1.5 items-center">
+        <span class="eyebrow mr-2">Role</span>
+        <button data-filter-role="all" class="chip" data-active="true">All</button>
+        {allRoles.map((r) => (
+          <button data-filter-role={r} class="chip">{site.roleLabels[r]}</button>
+        ))}
+      </div>
+      <div class="flex flex-wrap gap-1.5 items-center">
+        <span class="eyebrow mr-2">Genre</span>
+        <button data-filter-genre="all" class="chip" data-active="true">All</button>
+        {allGenres.map((g) => (
+          <button data-filter-genre={g} class="chip">{site.genreLabels[g as GenreKey] ?? g}</button>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="mx-auto max-w-6xl px-6 py-12">
+      <div id="band-grid" class="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
+        {bands.map((band) => (
+          <div data-band-id={band.id} data-role={band.data.role} data-genres={band.data.genres.join(',')}>
+            <BandCard band={band} />
+          </div>
+        ))}
+      </div>
+      <p id="empty-state" class="hidden text-center py-12 text-[var(--color-muted)] font-[var(--font-sans)]">
+        No bands match those filters.
+      </p>
+    </div>
+  </section>
+
+  <script type="application/json" id="bands-data" set:html={JSON.stringify(bandsJson)} />
+
+  <script>
+    const params = new URLSearchParams(window.location.search);
+    let activeRole = params.get('role') || 'all';
+    let activeGenre = params.get('genre') || 'all';
+
+    function applyActive(group: 'role' | 'genre', value: string) {
+      const buttons = document.querySelectorAll(`[data-filter-${group}]`);
+      buttons.forEach((b) => {
+        const v = b.getAttribute(`data-filter-${group}`);
+        b.setAttribute('data-active', String(v === value));
+      });
+    }
+
+    function update() {
+      const items = document.querySelectorAll<HTMLElement>('#band-grid > [data-band-id]');
+      let shown = 0;
+      items.forEach((el) => {
+        const role = el.dataset.role;
+        const genres = (el.dataset.genres || '').split(',').filter(Boolean);
+        const okRole = activeRole === 'all' || role === activeRole;
+        const okGenre = activeGenre === 'all' || genres.includes(activeGenre);
+        const visible = okRole && okGenre;
+        el.style.display = visible ? '' : 'none';
+        if (visible) shown++;
+      });
+      const empty = document.getElementById('empty-state');
+      if (empty) empty.classList.toggle('hidden', shown !== 0);
+
+      const url = new URL(window.location.href);
+      if (activeRole === 'all') url.searchParams.delete('role'); else url.searchParams.set('role', activeRole);
+      if (activeGenre === 'all') url.searchParams.delete('genre'); else url.searchParams.set('genre', activeGenre);
+      window.history.replaceState({}, '', url.toString());
+    }
+
+    document.querySelectorAll('[data-filter-role]').forEach((b) =>
+      b.addEventListener('click', () => {
+        activeRole = b.getAttribute('data-filter-role') || 'all';
+        applyActive('role', activeRole);
+        update();
+      })
+    );
+    document.querySelectorAll('[data-filter-genre]').forEach((b) =>
+      b.addEventListener('click', () => {
+        activeGenre = b.getAttribute('data-filter-genre') || 'all';
+        applyActive('genre', activeGenre);
+        update();
+      })
+    );
+
+    applyActive('role', activeRole);
+    applyActive('genre', activeGenre);
+    update();
+  </script>
+</Base>
