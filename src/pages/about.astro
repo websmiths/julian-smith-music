@@ -38,7 +38,7 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
       </p>
 
       <p>
-        Core member of {counts.core ?? 0} bands; substitute on bass for several
+        Core member of a number of bands; substitute on bass for several
         others when their regular player can't make it; studio session
         work; live sound when needed.
       </p>
@@ -49,22 +49,6 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
         O'Keeffe at the New Orleans / Afrobeat end, and recording
         engineer Andy Downer at A.D Studio in Lismore.
       </p>
-    </div>
-  </section>
-
-  <section class="border-b border-[var(--color-rule)]">
-    <div class="mx-auto max-w-6xl px-6 py-10 grid grid-cols-2 md:grid-cols-4 gap-6">
-      {[
-        { n: counts.core ?? 0, l: 'Core bands' },
-        { n: counts.sub ?? 0, l: 'Subs' },
-        { n: counts.session ?? 0, l: 'Sessions' },
-        { n: bands.length, l: 'Projects logged' },
-      ].map((s) => (
-        <div class="border-t border-[var(--color-rule)] pt-3">
-          <p class="font-[var(--font-display)] text-4xl font-bold text-[var(--color-ink)]">{s.n}</p>
-          <p class="eyebrow mt-1">{s.l}</p>
-        </div>
-      ))}
     </div>
   </section>
 

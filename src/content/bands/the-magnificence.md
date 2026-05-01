@@ -57,6 +57,7 @@ links:
       url: "https://www.camtrumpet.com/the-magnificence"
     - label: "Music Collective listing"
       url: "https://musiccollective.com.au/listing/the-magnificence/"
+image: "/images/magnificence-4.jpg"
 featured: true
 confirmed: true
 ---

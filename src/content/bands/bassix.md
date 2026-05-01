@@ -35,6 +35,7 @@ embeds:
 quote:
   text: "Soulful Pop Folk that's had a Wild night on the Blues."
   attribution: "Band's own"
+image: "/images/bassix-1.jpg"
 featured: true
 confirmed: true
 ---

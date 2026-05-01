@@ -8,6 +8,7 @@ era: "—"
 region: "Northern Rivers NSW"
 blurb: "A Facebook page is known to exist; deeper details pending Julian's notes."
 featured: false
+image: "/images/stagger-juice.jpg"
 confirmed: false
 ---
 

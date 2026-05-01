@@ -30,6 +30,7 @@ embeds:
   youtube:
     - id: "E1-vGAFaW2g"
       title: "Sofiella & The Handsome Husbands — Cup of Discontent"
+image: "/images/husbands-1.jpg"
 featured: true
 confirmed: true
 ---

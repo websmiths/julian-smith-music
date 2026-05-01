@@ -33,6 +33,7 @@ links:
   other:
     - label: "Funkafide page"
       url: "https://funkafide.com/the-blueskillet-rovers"
+image: "/images/blueskillet-1.jpg"
 featured: true
 confirmed: true
 ---

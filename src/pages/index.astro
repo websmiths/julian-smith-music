@@ -2,24 +2,20 @@
 import { getCollection } from 'astro:content';
 import Base from '../layouts/Base.astro';
 import BandCard from '../components/BandCard.astro';
+import CurveDivider from '../components/CurveDivider.astro';
 import { site } from '../lib/site';
 
 const bands = (await getCollection('bands')).sort((a, b) =>
   (b.data.yearStart ?? 0) - (a.data.yearStart ?? 0)
 );
 const featured = bands.filter((b) => b.data.featured).slice(0, 4);
-const allCount = bands.length;
-const roleCounts = bands.reduce<Record<string, number>>((acc, b) => {
-  acc[b.data.role] = (acc[b.data.role] ?? 0) + 1;
-  return acc;
-}, {});
 const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 
-const sidebarLinks: { href: string; label: string; meta?: string }[] = [
-  { href: '/bands?role=core', label: 'Core member', meta: String(roleCounts.core ?? 0) },
-  { href: '/bands?role=sub', label: 'Sub / stand-in', meta: String(roleCounts.sub ?? 0) },
-  { href: '/bands?role=session', label: 'Studio session', meta: String(roleCounts.session ?? 0) },
-  { href: '/bands', label: 'All bands', meta: String(allCount) },
+const sidebarLinks: { href: string; label: string }[] = [
+  { href: '/bands?role=core', label: 'Core member' },
+  { href: '/bands?role=sub', label: 'Sub / stand-in' },
+  { href: '/bands?role=session', label: 'Studio session' },
+  { href: '/bands', label: 'All bands' },
   { href: '/recordings', label: 'Recordings' },
   { href: '/live', label: 'Festivals & venues' },
   { href: '/for-hire', label: 'For hire' },
@@ -27,10 +23,9 @@ const sidebarLinks: { href: string; label: string; meta?: string }[] = [
 ];
 ---
 <Base>
-  <div class="mx-auto max-w-7xl px-6 grid md:grid-cols-12 gap-8 py-8">
-    <!-- Sticky sidebar -->
-    <aside class="md:col-span-4 lg:col-span-3 md:sticky md:top-6 md:self-start panel-dark relative overflow-hidden">
-      <!-- Flowing line accent — top right -->
+  <div class="mx-auto max-w-7xl grid md:grid-cols-12 md:gap-8 px-6 md:px-6 py-8">
+    <!-- Sticky dark sidebar -->
+    <aside class="md:col-span-4 lg:col-span-3 md:self-start panel-dark relative overflow-hidden mb-8 md:mb-0">
       <svg class="absolute top-0 right-0 w-32 h-32 opacity-30 pointer-events-none" viewBox="0 0 120 120" fill="none" stroke="currentColor" stroke-width="0.6" style="color: var(--color-dark-muted)">
         <path d="M120,10 C90,30 100,55 70,60 C40,65 50,90 20,100" stroke-linecap="round" />
         <path d="M120,30 C95,50 105,70 80,80" stroke-linecap="round" />
@@ -70,7 +65,6 @@ const sidebarLinks: { href: string; label: string; meta?: string }[] = [
                     <span class="text-[var(--color-dark-muted)] group-hover:text-[var(--color-dark-text)] transition-colors">→</span>
                     <span>{item.label}</span>
                   </span>
-                  {item.meta && <span class="text-xs text-[var(--color-dark-muted)]">{item.meta}</span>}
                 </a>
               </li>
             ))}
@@ -97,19 +91,20 @@ const sidebarLinks: { href: string; label: string; meta?: string }[] = [
         </div>
       </div>
 
-      <!-- Flowing line accent — bottom left -->
       <svg class="absolute bottom-0 left-0 w-40 h-24 opacity-25 pointer-events-none" viewBox="0 0 160 96" fill="none" stroke="currentColor" stroke-width="0.6" style="color: var(--color-dark-muted)">
         <path d="M0,80 C40,90 60,40 100,55 C130,65 145,40 160,50" stroke-linecap="round" />
       </svg>
     </aside>
 
-    <!-- Main content -->
-    <div class="md:col-span-8 lg:col-span-9 space-y-14 relative">
-      <section>
+    <!-- Main column: stacked sections with broader curved transitions -->
+    <div class="md:col-span-8 lg:col-span-9 min-w-0">
+
+      <!-- 1. About / bio (paper) -->
+      <section class="bg-[var(--color-paper)] py-2 px-1">
         <p class="eyebrow mb-3">About</p>
         <p class="text-lg text-[var(--color-ink)] leading-relaxed max-w-2xl">
-          Plays in {roleCounts.core ?? 0} bands across jazz, folk, blues, funk
-          and various world influences. Subs on bass for several others,
+          Plays in a number of bands across jazz, folk, blues, funk and
+          various world influences. Subs on bass for several others,
           sessions when needed, and runs live sound.
         </p>
         <p class="mt-4 text-[var(--color-ink-soft)] leading-relaxed max-w-2xl">
@@ -117,22 +112,65 @@ const sidebarLinks: { href: string; label: string; meta?: string }[] = [
         </p>
       </section>
 
-      <!-- Flowing divider -->
-      <div class="relative">
-        <svg class="w-full h-8" viewBox="0 0 800 32" preserveAspectRatio="none" fill="none" stroke="currentColor" stroke-width="0.7" style="color: var(--color-rule)">
-          <path d="M0,16 C150,4 250,28 400,16 C550,4 650,28 800,16" stroke-linecap="round" />
-        </svg>
-      </div>
+      <!-- 2. Curve into a paper-warm tinted band -->
+      <CurveDivider from="paper" to="paper-warm" shape="soft" height={70} />
 
-      <section>
+      <!-- 3. Hero plate: Magnificence on graffiti wall (paper-warm) -->
+      <section class="bg-[var(--color-paper-warm)] py-8 px-1">
+        <p class="eyebrow mb-3">Plate I</p>
+        <figure class="m-0">
+          <div class="aspect-[16/9] bg-[var(--color-paper-deep)] overflow-hidden border border-[var(--color-rule-soft)]">
+            <img src={`${base}/images/magnificence-2.jpg`} alt="The Magnificence on a graffiti wall" loading="lazy" class="w-full h-full object-cover" />
+          </div>
+          <figcaption class="mt-3 text-sm font-[var(--font-sans)] text-[var(--color-muted)] flex items-baseline justify-between gap-4">
+            <span>The Magnificence — Lismore, Northern Rivers</span>
+            <a href={`${base}/bands/the-magnificence`} class="editorial">Read more →</a>
+          </figcaption>
+        </figure>
+      </section>
+
+      <!-- 4. Curve back to paper -->
+      <CurveDivider from="paper-warm" to="paper" shape="arc" height={90} />
+
+      <!-- 5. Featured bands grid -->
+      <section class="bg-[var(--color-paper)] py-6 px-1">
         <div class="flex items-end justify-between mb-5 border-b border-[var(--color-rule)] pb-3">
           <h2 class="font-[var(--font-display)] text-2xl font-bold">Featured bands</h2>
-          <a href={`${base}/bands`} class="font-[var(--font-sans)] text-sm text-[var(--color-ink-soft)] hover:text-[var(--color-ink)]">All {allCount} →</a>
+          <a href={`${base}/bands`} class="font-[var(--font-sans)] text-sm text-[var(--color-ink-soft)] hover:text-[var(--color-ink)]">All bands →</a>
         </div>
         <div class="grid sm:grid-cols-2 gap-4">
-          {featured.map((band) => <BandCard band={band} />)}
+          {featured.map((band) => <BandCard band={band} feature={true} />)}
         </div>
       </section>
+
+      <!-- 6. Curve into dark panel -->
+      <CurveDivider from="paper" to="dark" shape="wash" height={100} />
+
+      <!-- 7. Dark panel: image diptych on the road -->
+      <section class="panel-dark py-10 px-5">
+        <p class="eyebrow mb-4">On the road</p>
+        <div class="grid md:grid-cols-2 gap-5">
+          <figure class="m-0">
+            <div class="aspect-[4/3] bg-[var(--color-dark-soft)] overflow-hidden">
+              <img src={`${base}/images/blueskillet-1.jpg`} alt="The BlueSkillet Rovers in full cry" loading="lazy" class="w-full h-full object-cover" />
+            </div>
+            <figcaption class="mt-2 text-xs font-[var(--font-sans)] text-[var(--color-dark-muted)]">
+              The BlueSkillet Rovers — Plate II
+            </figcaption>
+          </figure>
+          <figure class="m-0">
+            <div class="aspect-[4/3] bg-[var(--color-dark-soft)] overflow-hidden">
+              <img src={`${base}/images/husbands-1.jpg`} alt="Sofiella & The Handsome Husbands" loading="lazy" class="w-full h-full object-cover" />
+            </div>
+            <figcaption class="mt-2 text-xs font-[var(--font-sans)] text-[var(--color-dark-muted)]">
+              Sofiella &amp; The Handsome Husbands — Plate III
+            </figcaption>
+          </figure>
+        </div>
+      </section>
+
+      <!-- 8. Curve back to paper, finishing the column -->
+      <CurveDivider from="dark" to="paper" shape="soft" height={90} />
     </div>
   </div>
 </Base>

@@ -1,0 +1,36 @@
+---
+interface Props {
+  from?: 'paper' | 'paper-warm' | 'paper-deep' | 'dark';
+  to?: 'paper' | 'paper-warm' | 'paper-deep' | 'dark';
+  shape?: 'soft' | 'arc' | 'wash';
+  height?: number;
+  flip?: boolean;
+}
+
+const { from = 'paper', to = 'paper-warm', shape = 'soft', height = 90, flip = false } = Astro.props;
+
+const tokenToVar: Record<string, string> = {
+  paper: 'var(--color-paper)',
+  'paper-warm': 'var(--color-paper-warm)',
+  'paper-deep': 'var(--color-paper-deep)',
+  dark: 'var(--color-dark)',
+};
+
+const bg = tokenToVar[from];
+const fill = tokenToVar[to];
+
+const paths: Record<string, string> = {
+  soft: 'M0,40 C300,90 600,0 900,40 C1140,70 1320,15 1440,35 L1440,100 L0,100 Z',
+  arc:  'M0,15 C480,90 960,90 1440,15 L1440,100 L0,100 Z',
+  wash: 'M0,60 C200,30 400,80 720,55 C1040,30 1240,80 1440,50 L1440,100 L0,100 Z',
+};
+---
+<div
+  aria-hidden="true"
+  style={`background: ${bg}; height: ${height}px; line-height: 0; ${flip ? 'transform: scaleY(-1);' : ''}`}
+  class="w-full"
+>
+  <svg viewBox="0 0 1440 100" preserveAspectRatio="none" class="w-full h-full block">
+    <path d={paths[shape]} fill={fill} />
+  </svg>
+</div>

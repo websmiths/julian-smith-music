@@ -24,20 +24,27 @@ interface Props {
 const { band, feature = false, variant = 'paper' } = Astro.props;
 const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 const dark = variant === 'dark';
+const padClass = feature ? 'p-6' : 'p-5';
+const imageNegMargin = feature ? '-mx-6 -mt-6 mb-5' : '-mx-5 -mt-5 mb-4';
 ---
 <a
   href={`${base}/bands/${band.id}`}
   class:list={[
-    'group block border transition-colors',
+    'group block border transition-colors overflow-hidden',
     dark
       ? 'border-[var(--color-dark-soft)] bg-[var(--color-dark-soft)] hover:border-[var(--color-dark-text)]'
       : 'border-[var(--color-rule-soft)] bg-[var(--color-paper)] hover:border-[var(--color-ink)]',
-    feature ? 'p-6' : 'p-5',
+    padClass,
   ]}
 >
   {band.data.image && (
-    <div class="aspect-[16/9] -mx-6 -mt-6 mb-5 bg-[var(--color-paper-deep)] overflow-hidden">
-      <img src={`${base}${band.data.image}`} alt={band.data.name} class="w-full h-full object-cover transition-opacity group-hover:opacity-90" />
+    <div class:list={['aspect-[4/3] bg-[var(--color-paper-deep)] overflow-hidden', imageNegMargin]}>
+      <img
+        src={`${base}${band.data.image}`}
+        alt={band.data.name}
+        loading="lazy"
+        class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-[1.02]"
+      />
     </div>
   )}
   <div class="flex items-baseline justify-between gap-4 mb-2">
