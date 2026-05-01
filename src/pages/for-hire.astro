@@ -53,26 +53,156 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
     </div>
   </section>
 
+  <section class="panel-dark py-10 px-6">
+    <div class="mx-auto max-w-6xl">
+      <figure class="m-0">
+        <div class="aspect-[16/7] overflow-hidden">
+          <img src={`${base}/images/mixing-console.jpg`} alt="Mixing console" loading="lazy" class="w-full h-full object-cover" />
+        </div>
+        <figcaption class="mt-3 text-xs font-[var(--font-sans)] text-[var(--color-dark-muted)]">
+          Live sound — Northern Rivers
+        </figcaption>
+      </figure>
+    </div>
+  </section>
+
   <section>
     <div class="mx-auto max-w-3xl px-6 py-14">
       <p class="eyebrow mb-3">Get in touch</p>
-      {site.email ? (
-        <p>
-          <a href={`mailto:${site.email}`} class="font-[var(--font-display)] text-2xl editorial">
-            {site.email}
-          </a>
-        </p>
-      ) : (
-        <p class="text-[var(--color-muted)] italic">Email address to be added.</p>
-      )}
-      {site.social.facebook && (
-        <p class="mt-3 text-sm font-[var(--font-sans)]">
-          Or message <a href={site.social.facebook} target="_blank" rel="noopener" class="editorial">Julian Smith plays music</a> on Facebook.
-        </p>
-      )}
-      <p class="mt-8 text-sm text-[var(--color-ink-soft)] leading-relaxed">
+      <p class="text-[var(--color-ink-soft)] leading-relaxed mb-8 max-w-xl">
+        Use the form below, or reach out directly at <a href={`mailto:${site.email}`} class="editorial">{site.email}</a>
+        {site.social.facebook && (<> or via <a href={site.social.facebook} target="_blank" rel="noopener" class="editorial">Facebook</a></>)}.
+      </p>
+
+      {/* Web3Forms — get a free access key at https://web3forms.com (enter your email, no account needed) */}
+      <form
+        id="contact-form"
+        class="space-y-5 font-[var(--font-sans)]"
+        novalidate
+      >
+        <input type="hidden" name="access_key" value="5821ef0a-cab7-404e-b0c4-5d930ca01156" />
+        <input type="hidden" name="subject" value="Booking enquiry — Julian Smith music" />
+        <input type="hidden" name="from_name" value="Julian Smith Music site" />
+        <input type="checkbox" name="botcheck" class="hidden" style="display:none" />
+
+        <div class="grid sm:grid-cols-2 gap-5">
+          <div>
+            <label for="cf-name" class="block eyebrow mb-2">Name</label>
+            <input
+              id="cf-name"
+              name="name"
+              type="text"
+              required
+              autocomplete="name"
+              placeholder="Your name"
+              class="w-full border border-[var(--color-rule)] bg-[var(--color-paper-warm)] px-4 py-2.5 text-sm text-[var(--color-ink)] placeholder:text-[var(--color-muted)] focus:outline-none focus:border-[var(--color-ink-soft)] transition-colors"
+            />
+          </div>
+          <div>
+            <label for="cf-email" class="block eyebrow mb-2">Email</label>
+            <input
+              id="cf-email"
+              name="email"
+              type="email"
+              required
+              autocomplete="email"
+              placeholder="your@email.com"
+              class="w-full border border-[var(--color-rule)] bg-[var(--color-paper-warm)] px-4 py-2.5 text-sm text-[var(--color-ink)] placeholder:text-[var(--color-muted)] focus:outline-none focus:border-[var(--color-ink-soft)] transition-colors"
+            />
+          </div>
+        </div>
+
+        <div>
+          <label for="cf-type" class="block eyebrow mb-2">What's it for?</label>
+          <select
+            id="cf-type"
+            name="enquiry_type"
+            class="w-full border border-[var(--color-rule)] bg-[var(--color-paper-warm)] px-4 py-2.5 text-sm text-[var(--color-ink)] focus:outline-none focus:border-[var(--color-ink-soft)] transition-colors appearance-none"
+          >
+            <option value="">— pick one (optional)</option>
+            <option>Sub / cover gig</option>
+            <option>Studio session</option>
+            <option>Festival or event</option>
+            <option>Live sound</option>
+            <option>Other</option>
+          </select>
+        </div>
+
+        <div>
+          <label for="cf-message" class="block eyebrow mb-2">Message</label>
+          <textarea
+            id="cf-message"
+            name="message"
+            required
+            rows="5"
+            placeholder="Date, venue, genre, anything useful…"
+            class="w-full border border-[var(--color-rule)] bg-[var(--color-paper-warm)] px-4 py-2.5 text-sm text-[var(--color-ink)] placeholder:text-[var(--color-muted)] focus:outline-none focus:border-[var(--color-ink-soft)] transition-colors resize-none"
+          ></textarea>
+        </div>
+
+        <div class="flex items-center gap-5">
+          <button
+            type="submit"
+            id="cf-submit"
+            class="font-[var(--font-display)] bg-[var(--color-dark)] text-[var(--color-dark-text)] px-7 py-2.5 text-sm font-semibold hover:bg-[var(--color-dark-hover,#2d3d35)] transition-colors disabled:opacity-50"
+          >
+            Send
+          </button>
+          <p id="cf-status" class="text-sm hidden"></p>
+        </div>
+      </form>
+
+      <p class="mt-10 text-sm text-[var(--color-ink-soft)] leading-relaxed border-t border-[var(--color-rule-soft)] pt-6">
         For a sense of what I sound like in different contexts, the <a href={`${base}/recordings`} class="editorial">recordings</a> page collects releases across every band; the <a href={`${base}/bands`} class="editorial">bands</a> page lets you browse by genre and role.
       </p>
     </div>
   </section>
+
+  <script>
+    const form = document.getElementById('contact-form') as HTMLFormElement | null;
+    const status = document.getElementById('cf-status') as HTMLElement | null;
+    const submit = document.getElementById('cf-submit') as HTMLButtonElement | null;
+
+    form?.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      if (!form || !status || !submit) return;
+
+      const data = Object.fromEntries(new FormData(form));
+
+      // Warn in dev if the key hasn't been replaced
+      if (String(data.access_key).startsWith('REPLACE_')) {
+        status.textContent = 'Dev mode: set your Web3Forms access key in for-hire.astro';
+        status.className = 'text-sm text-[var(--color-muted)]';
+        status.classList.remove('hidden');
+        return;
+      }
+
+      submit.disabled = true;
+      submit.textContent = 'Sending…';
+      status.classList.add('hidden');
+
+      try {
+        const res = await fetch('https://api.web3forms.com/submit', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+          body: JSON.stringify(data),
+        });
+        const json = await res.json();
+        if (res.ok && json.success) {
+          status.textContent = "Message sent — I’ll be in touch soon.";
+          status.className = 'text-sm text-[var(--color-ink)]';
+          form.reset();
+        } else {
+          throw new Error(json.message || 'Unknown error');
+        }
+      } catch (err) {
+        status.textContent = 'Something went wrong. Try emailing directly.';
+        status.className = 'text-sm text-red-600';
+      } finally {
+        submit.disabled = false;
+        submit.textContent = 'Send';
+        status.classList.remove('hidden');
+      }
+    });
+  </script>
 </Base>

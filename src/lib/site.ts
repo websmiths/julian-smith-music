@@ -3,7 +3,7 @@ export const site = {
   tagline: 'Bass and flute, Northern Rivers',
   region: 'Northern Rivers, NSW',
   bio: 'Plays mainly basses and flute, with regular work across funk, folk, blues, jazz, latin and various world influences. Anything with harmony and groove.',
-  email: '',
+  email: 'julian@websmiths.com.au',
   social: {
     facebook: 'https://www.facebook.com/JulianSmithPlays',
   },
