@@ -132,3 +132,29 @@ a.editorial:hover {
 }
 
 ::selection { background: var(--color-dark); color: var(--color-dark-text); }
+
+/* Ambient shape drift animations — each shape follows a different slow path */
+@keyframes drift-1 {
+  0%, 100% { transform: translate(0,    0);    }
+  30%       { transform: translate(3vw,  2vh);  }
+  65%       { transform: translate(-2vw, 4vh);  }
+}
+@keyframes drift-2 {
+  0%, 100% { transform: translate(0,    0);    }
+  40%       { transform: translate(-3vw, -2vh); }
+  72%       { transform: translate(2vw,  -4vh); }
+}
+@keyframes drift-3 {
+  0%, 100% { transform: translate(0,    0);    }
+  55%       { transform: translate(2vw,  -3vh); }
+}
+
+.ambient-shape-1 { animation: drift-1 90s  ease-in-out infinite; }
+.ambient-shape-2 { animation: drift-2 115s ease-in-out infinite; }
+.ambient-shape-3 { animation: drift-3 75s  ease-in-out infinite; }
+
+@media (prefers-reduced-motion: reduce) {
+  .ambient-shape-1,
+  .ambient-shape-2,
+  .ambient-shape-3 { animation: none; }
+}
