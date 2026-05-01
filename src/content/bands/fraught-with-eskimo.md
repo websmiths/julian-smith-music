@@ -8,7 +8,11 @@ era: "Early 1990s"
 yearStart: 1991
 yearEnd: 1994
 region: "Bathurst NSW (CSU)"
-blurb: "Bathurst-era CSU band, early 1990s. Pre-internet; details from memory."
+blurb: "Bathurst-era CSU band, early 1990s. Released *Bothered By a Sound From the Aquarium* in 1995."
+discography:
+  - title: "Bothered By a Sound From the Aquarium"
+    year: 1995
+    type: album
 featured: false
 confirmed: false
 ---

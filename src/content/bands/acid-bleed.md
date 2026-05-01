@@ -17,6 +17,8 @@ discography:
   - title: "Collage"
     year: 2015
     type: album
+    notes: "Band's release — Julian sits in live, not on the record."
+    julianOn: false
 links:
   facebook: "https://www.facebook.com/AcidBleeder/"
   other:

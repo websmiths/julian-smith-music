@@ -16,16 +16,18 @@ type Entry = {
 };
 
 const all: Entry[] = bands.flatMap((b) =>
-  (b.data.discography ?? []).map((d) => ({
-    band: b.data.name,
-    bandId: b.id,
-    title: d.title,
-    year: d.year,
-    type: d.type,
-    notes: d.notes,
-    bandcamp: d.bandcamp,
-    spotify: d.spotify,
-  }))
+  (b.data.discography ?? [])
+    .filter((d) => d.julianOn !== false)
+    .map((d) => ({
+      band: b.data.name,
+      bandId: b.id,
+      title: d.title,
+      year: d.year,
+      type: d.type,
+      notes: d.notes,
+      bandcamp: d.bandcamp,
+      spotify: d.spotify,
+    }))
 );
 
 const sorted = all.sort((a, b) => (b.year ?? 0) - (a.year ?? 0));

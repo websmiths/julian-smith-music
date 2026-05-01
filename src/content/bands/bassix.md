@@ -15,6 +15,7 @@ members:
   - "Glenn Kellett — trumpet (selected tracks)"
 discography:
   - title: "Live at the Duck Pond"
+    year: 2023
     type: live
     notes: "8 tracks recorded at South Lismore Duck Pond. All songs by Miss Jodie."
 links:

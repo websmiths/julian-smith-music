@@ -8,7 +8,12 @@ era: "Early 1990s"
 yearStart: 1991
 yearEnd: 1994
 region: "Bathurst NSW (CSU)"
-blurb: "An early-1990s Bathurst-era band from Julian's CSU years. Pre-internet — listed here from memory; no online trace."
+blurb: "An early-1990s Bathurst-era band from Julian's CSU years. Released *Acapella Voodoo* around 1996."
+discography:
+  - title: "Acapella Voodoo"
+    year: 1996
+    type: album
+    notes: "Approximate year."
 featured: false
 confirmed: false
 ---

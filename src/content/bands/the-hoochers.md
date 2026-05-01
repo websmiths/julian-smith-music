@@ -22,10 +22,12 @@ discography:
   - title: "Funkadelic Fever"
     year: 1997
     type: album
-    notes: "7 originals; originally cassette-only."
+    notes: "7 originals; originally cassette-only. Pre-Julian."
+    julianOn: false
   - title: "Absofunkinbluesly"
     type: album
-    notes: "10 tracks, year not stated."
+    notes: "Pre-Julian."
+    julianOn: false
 festivals:
   - "Nimbin MardiGrass 2025"
   - "Maleny Folk Festival (origins)"

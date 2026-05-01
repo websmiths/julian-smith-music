@@ -128,10 +128,11 @@ links.other?.forEach((l) => linkEntries.push(l));
             <p class="eyebrow mb-2">Discography</p>
             <ul class="space-y-3">
               {band.data.discography.map((d) => (
-                <li>
-                  <p class="font-semibold text-[var(--color-ink)]">
-                    {d.bandcamp ? <a href={d.bandcamp} class="editorial">{d.title}</a> : d.title}
-                    {d.year && <span class="ml-2 text-[var(--color-muted)] font-normal">({d.year})</span>}
+                <li class:list={[d.julianOn === false && 'opacity-60']}>
+                  <p class="font-semibold text-[var(--color-ink)] flex items-baseline gap-2 flex-wrap">
+                    {d.bandcamp ? <a href={d.bandcamp} class="editorial">{d.title}</a> : <span>{d.title}</span>}
+                    {d.year && <span class="text-[var(--color-muted)] font-normal">({d.year})</span>}
+                    {d.julianOn === false && <span class="text-[10px] uppercase tracking-widest text-[var(--color-muted)]">band only</span>}
                   </p>
                   {d.notes && <p class="text-xs text-[var(--color-muted)] mt-0.5">{d.notes}</p>}
                 </li>

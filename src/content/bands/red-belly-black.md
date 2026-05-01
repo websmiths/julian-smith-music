@@ -11,8 +11,8 @@ members:
   - "Liz Moore — songwriter / vocals"
   - "Julian Smith — double bass"
 discography:
-  - title: "(One album)"
-    notes: "Title and year to be confirmed by Julian."
+  - title: "(One album — title TBC)"
+    notes: "One studio album; title and year pending."
 featured: false
 confirmed: false
 ---
