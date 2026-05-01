@@ -90,11 +90,11 @@ links.other?.forEach((l) => linkEntries.push(l));
           </blockquote>
         )}
 
-        {band.data.embeds?.youtube && band.data.embeds.youtube.length > 0 && (
+        {(band.data.embeds?.youtube?.length || band.data.embeds?.facebook?.length) && (
           <section>
             <p class="eyebrow mb-3">Video</p>
             <div class="space-y-4">
-              {band.data.embeds.youtube.map((v) => (
+              {band.data.embeds?.youtube?.map((v) => (
                 <div>
                   <div class="aspect-video bg-[var(--color-paper-deep)] border border-[var(--color-rule)]">
                     <iframe
@@ -104,6 +104,22 @@ links.other?.forEach((l) => linkEntries.push(l));
                       allow="accelerometer; clipboard-write; encrypted-media; picture-in-picture"
                       allowfullscreen
                       class="w-full h-full"
+                    ></iframe>
+                  </div>
+                  {v.title && <p class="mt-2 text-xs text-[var(--color-muted)] font-[var(--font-sans)]">{v.title}</p>}
+                </div>
+              ))}
+              {band.data.embeds?.facebook?.map((v) => (
+                <div>
+                  <div class="aspect-video bg-[var(--color-paper-deep)] border border-[var(--color-rule)]">
+                    <iframe
+                      src={`https://www.facebook.com/plugins/video.php?href=https%3A%2F%2Fwww.facebook.com%2Fwatch%2F%3Fv%3D${v.id}&show_text=0`}
+                      title={v.title || band.data.name}
+                      frameborder="0"
+                      allow="autoplay; clipboard-write; encrypted-media; picture-in-picture"
+                      allowfullscreen
+                      class="w-full h-full"
+                      scrolling="no"
                     ></iframe>
                   </div>
                   {v.title && <p class="mt-2 text-xs text-[var(--color-muted)] font-[var(--font-sans)]">{v.title}</p>}

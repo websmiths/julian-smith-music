@@ -57,13 +57,14 @@ links:
       url: "https://www.camtrumpet.com/the-magnificence"
     - label: "Music Collective listing"
       url: "https://musiccollective.com.au/listing/the-magnificence/"
-    - label: "Live video — Facebook"
-      url: "https://www.facebook.com/watch/?v=1708731876159811"
 embeds:
   youtube:
     - id: "McwN2FYM-tQ"
       title: "The Magnificence — live"
       params: "start=135"
+  facebook:
+    - id: "1708731876159811"
+      title: "The Magnificence — live (Facebook)"
 image: "/images/magnificence-4.jpg"
 featured: true
 active: false
