@@ -57,14 +57,13 @@ links:
       url: "https://www.camtrumpet.com/the-magnificence"
     - label: "Music Collective listing"
       url: "https://musiccollective.com.au/listing/the-magnificence/"
+    - label: "Live video — Facebook"
+      url: "https://www.facebook.com/watch/?v=1708731876159811"
 embeds:
   youtube:
-    - id: "hfvanvA2eEA"
-      title: "I'm Walkin' — Back Street Bar, August 2024"
-    - id: "m2YZzb-gr-Q"
-      title: "All of Me — Back Street Bar, July 2024"
-    - id: "rn8ieJh3sbw"
-      title: "Jazz Sauce Live — compilation"
+    - id: "McwN2FYM-tQ"
+      title: "The Magnificence — live"
+      params: "start=135"
 image: "/images/magnificence-4.jpg"
 featured: true
 active: false

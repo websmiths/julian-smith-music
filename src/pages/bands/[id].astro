@@ -98,7 +98,7 @@ links.other?.forEach((l) => linkEntries.push(l));
                 <div>
                   <div class="aspect-video bg-[var(--color-paper-deep)] border border-[var(--color-rule)]">
                     <iframe
-                      src={`https://www.youtube-nocookie.com/embed/${v.id}`}
+                      src={`https://www.youtube-nocookie.com/embed/${v.id}${v.params ? '?' + v.params : ''}`}
                       title={v.title || band.data.name}
                       frameborder="0"
                       allow="accelerometer; clipboard-write; encrypted-media; picture-in-picture"
