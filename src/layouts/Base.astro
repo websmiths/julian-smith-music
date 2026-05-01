@@ -32,18 +32,13 @@ const here = Astro.url.pathname.replace(base, '') || '/';
          but behind all page content. SVG feGaussianBlur is the most
          reliable cross-browser blur. -->
     <div aria-hidden="true" style="position:fixed;inset:0;z-index:-1;pointer-events:none;">
-      <svg width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
-        <defs>
-          <filter id="blob" x="-40%" y="-40%" width="180%" height="180%">
-            <feGaussianBlur stdDeviation="45"/>
-          </filter>
-        </defs>
+      <svg width="100%" height="100%" xmlns="http://www.w3.org/2000/svg" style="mix-blend-mode:multiply;">
         <!-- Upper-left: sage green -->
-        <ellipse class="ambient-shape-1" cx="6%" cy="16%" rx="38%" ry="30%" fill="rgba(100,148,112,0.32)" filter="url(#blob)"/>
+        <ellipse class="ambient-shape-1" cx="6%" cy="16%" rx="38%" ry="30%" fill="rgba(100,148,112,0.50)"/>
         <!-- Lower-right: grey-blue -->
-        <ellipse class="ambient-shape-2" cx="88%" cy="78%" rx="34%" ry="38%" fill="rgba(70,108,152,0.24)" filter="url(#blob)"/>
+        <ellipse class="ambient-shape-2" cx="88%" cy="78%" rx="34%" ry="38%" fill="rgba(70,108,152,0.50)"/>
         <!-- Centre: warm earth -->
-        <ellipse class="ambient-shape-3" cx="58%" cy="46%" rx="28%" ry="24%" fill="rgba(138,118,90,0.18)" filter="url(#blob)"/>
+        <ellipse class="ambient-shape-3" cx="58%" cy="46%" rx="28%" ry="24%" fill="rgba(138,118,90,0.50)"/>
       </svg>
     </div>
 
