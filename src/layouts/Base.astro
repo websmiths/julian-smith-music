@@ -27,14 +27,24 @@ const here = Astro.url.pathname.replace(base, '') || '/';
   </head>
   <body class="min-h-screen flex flex-col">
 
-    <!-- Ambient background shapes: fixed to viewport, behind all content -->
-    <div aria-hidden="true" style="position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden;">
-      <!-- Upper-left: sage green -->
-      <div style="position:absolute;width:70vw;height:60vh;top:-8%;left:-12%;border-radius:50%;background:rgba(112,158,120,0.18);filter:blur(90px);"></div>
-      <!-- Lower-right: grey-blue -->
-      <div style="position:absolute;width:65vw;height:70vh;bottom:-12%;right:-10%;border-radius:50%;background:rgba(80,118,158,0.13);filter:blur(90px);"></div>
-      <!-- Centre: warm earth -->
-      <div style="position:absolute;width:55vw;height:45vh;top:32%;left:38%;border-radius:50%;background:rgba(148,128,102,0.09);filter:blur(80px);"></div>
+    <!-- Ambient background shapes: fixed to viewport, z-index:-1 inside
+         body's isolated stacking context so they sit above html background
+         but behind all page content. SVG feGaussianBlur is the most
+         reliable cross-browser blur. -->
+    <div aria-hidden="true" style="position:fixed;inset:0;z-index:-1;pointer-events:none;">
+      <svg width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <filter id="blob" x="-40%" y="-40%" width="180%" height="180%">
+            <feGaussianBlur stdDeviation="45"/>
+          </filter>
+        </defs>
+        <!-- Upper-left: sage green -->
+        <ellipse cx="6%" cy="16%" rx="38%" ry="30%" fill="rgba(100,148,112,0.32)" filter="url(#blob)"/>
+        <!-- Lower-right: grey-blue -->
+        <ellipse cx="88%" cy="78%" rx="34%" ry="38%" fill="rgba(70,108,152,0.24)" filter="url(#blob)"/>
+        <!-- Centre: warm earth -->
+        <ellipse cx="58%" cy="46%" rx="28%" ry="24%" fill="rgba(138,118,90,0.18)" filter="url(#blob)"/>
+      </svg>
     </div>
 
     <header class="border-b border-[var(--color-rule)] bg-[var(--color-paper)]/85 backdrop-blur-md sticky top-0 z-20">
@@ -69,11 +79,11 @@ const here = Astro.url.pathname.replace(base, '') || '/';
       </div>
     </header>
 
-    <main class="flex-1 relative z-10">
+    <main class="flex-1">
       <slot />
     </main>
 
-    <footer class="mt-20 panel-dark relative z-10">
+    <footer class="mt-20 panel-dark">
       <div class="mx-auto max-w-6xl px-6 py-10 grid gap-8 md:grid-cols-3 font-[var(--font-sans)] text-sm">
         <div>
           <p class="font-[var(--font-display)] text-base font-bold">Julian Smith</p>

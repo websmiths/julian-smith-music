@@ -45,9 +45,11 @@ html {
 }
 
 /* Body is transparent so the fixed shape layer in Base.astro shows through.
-   panel-dark sections (solid dark bg) will cover the shapes — intentional. */
+   isolation: isolate creates a stacking context so z-index:-1 children
+   sit above the html background but below all page content. */
 body {
   background: transparent;
+  isolation: isolate;
   color: var(--color-ink);
 }
 

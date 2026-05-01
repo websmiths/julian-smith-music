@@ -32,6 +32,7 @@ embeds:
       title: "Sofiella & The Handsome Husbands — Cup of Discontent"
 image: "/images/husbands-1.jpg"
 featured: true
+active: false
 confirmed: true
 ---
 

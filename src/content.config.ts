@@ -48,6 +48,7 @@ const bands = defineCollection({
     }).optional(),
     image: z.string().optional(), // path or URL
     featured: z.boolean().default(false),
+    active: z.boolean().default(true), // false = band has been inactive for a while
     confirmed: z.boolean().default(true), // false = needs Julian's input
   }),
 });
