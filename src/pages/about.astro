@@ -12,10 +12,15 @@ const counts = bands.reduce<Record<string, number>>((acc, b) => {
 const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 ---
 <Base title="About" description="Bass and flute, Northern Rivers — about Julian Smith.">
-  <section class="border-b border-[var(--color-rule)]">
-    <div class="mx-auto max-w-6xl px-6 py-14">
-      <p class="eyebrow mb-3">About</p>
-      <h1 class="font-[var(--font-display)] font-bold text-5xl md:text-6xl leading-tight">Julian Smith</h1>
+  <!-- Painterly hero strip -->
+  <section class="relative aspect-[3/1] md:aspect-[16/5] bg-[var(--color-dark)] overflow-hidden border-b border-[var(--color-rule)]">
+    <img src={`${base}/images/julian-smith-bass-abstract.jpg`} alt="Julian Smith with double bass — abstract" class="w-full h-full object-cover" />
+    <div class="absolute inset-0 bg-gradient-to-t from-[var(--color-dark)]/70 via-transparent to-transparent"></div>
+    <div class="absolute bottom-0 left-0 right-0">
+      <div class="mx-auto max-w-6xl px-6 pb-6 md:pb-10">
+        <p class="eyebrow mb-2" style="color: var(--color-dark-muted)">About</p>
+        <h1 class="font-[var(--font-display)] font-bold text-5xl md:text-6xl leading-tight text-[var(--color-dark-text)] drop-shadow-lg">Julian Smith</h1>
+      </div>
     </div>
   </section>
 
@@ -28,12 +33,9 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
         calls itself Timbuktu.
       </p>
 
-      <blockquote class="pullquote">
-        &ldquo;{site.bio}&rdquo;
-        <footer class="mt-3 text-xs not-italic font-[var(--font-sans)] text-[var(--color-muted)]">
-          {site.bioSource && <>via <a href={site.bioSource.url} class="editorial">{site.bioSource.label}</a></>}
-        </footer>
-      </blockquote>
+      <p>
+        {site.bio}
+      </p>
 
       <p>
         Core member of {counts.core ?? 0} bands; substitute on bass for several

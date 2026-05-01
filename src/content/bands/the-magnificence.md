@@ -57,10 +57,6 @@ links:
       url: "https://www.camtrumpet.com/the-magnificence"
     - label: "Music Collective listing"
       url: "https://musiccollective.com.au/listing/the-magnificence/"
-embeds:
-  youtube:
-    - id: "ODGzDLK6pDs"
-      title: "The Magnificence — Jazz @ Jammo, June 2018"
 featured: true
 confirmed: true
 ---

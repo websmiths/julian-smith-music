@@ -43,7 +43,7 @@ const sidebarLinks: { href: string; label: string; meta?: string }[] = [
         </div>
 
         <div class="aspect-[4/5] bg-[var(--color-dark-soft)] border border-[var(--color-dark-soft)] overflow-hidden">
-          <img src={`${base}/images/portrait.jpg`} alt="Julian Smith" class="w-full h-full object-cover" onerror="this.style.display='none'" />
+          <img src={`${base}/images/julian-smith-portrait.jpg`} alt="Julian Smith with double bass" class="w-full h-full object-cover" onerror="this.style.display='none'" />
         </div>
 
         <div class="font-[var(--font-sans)] text-sm">
@@ -112,14 +112,9 @@ const sidebarLinks: { href: string; label: string; meta?: string }[] = [
           and various world influences. Subs on bass for several others,
           sessions when needed, and runs live sound.
         </p>
-        <blockquote class="pullquote mt-6">
-          &ldquo;{site.bio}&rdquo;
-        </blockquote>
-        {site.bioSource && (
-          <p class="text-xs text-[var(--color-muted)] font-[var(--font-sans)]">
-            via <a href={site.bioSource.url} class="editorial">{site.bioSource.label}</a>
-          </p>
-        )}
+        <p class="mt-4 text-[var(--color-ink-soft)] leading-relaxed max-w-2xl">
+          {site.bio}
+        </p>
       </section>
 
       <!-- Flowing divider -->
