@@ -32,13 +32,10 @@ const here = Astro.url.pathname.replace(base, '') || '/';
          creates organic amorphous shapes; mix-blend-mode:multiply makes
          overlapping areas visibly darken. -->
     <div aria-hidden="true" style="position:fixed;inset:0;z-index:-1;pointer-events:none;">
-      <!-- Positions and border-radii are randomised by the inline script below -->
-      <!-- Upper-left zone: sage green -->
-      <div data-blob class="ambient-shape-1" style="position:absolute;width:65vw;height:58vh;top:-8vh;left:-14vw;background:rgba(100,148,112,0.12);border-radius:62% 38% 46% 54% / 60% 44% 56% 40%;mix-blend-mode:multiply;"></div>
-      <!-- Lower-right zone: grey-blue -->
-      <div data-blob class="ambient-shape-2" style="position:absolute;width:60vw;height:64vh;bottom:-14vh;right:-12vw;background:rgba(70,108,152,0.11);border-radius:44% 56% 38% 62% / 48% 62% 38% 52%;mix-blend-mode:multiply;"></div>
-      <!-- Centre zone: warm earth -->
-      <div data-blob class="ambient-shape-3" style="position:absolute;width:52vw;height:44vh;top:28vh;left:32vw;background:rgba(138,118,90,0.10);border-radius:70% 30% 58% 42% / 38% 66% 34% 62%;mix-blend-mode:multiply;"></div>
+      <!-- Size, position randomised by the inline script below -->
+      <div data-blob class="ambient-shape-1" style="position:absolute;background:rgba(100,148,112,0.07);border-radius:50%;mix-blend-mode:multiply;"></div>
+      <div data-blob class="ambient-shape-2" style="position:absolute;background:rgba(70,108,152,0.07);border-radius:50%;mix-blend-mode:multiply;"></div>
+      <div data-blob class="ambient-shape-3" style="position:absolute;background:rgba(138,118,90,0.06);border-radius:50%;mix-blend-mode:multiply;"></div>
     </div>
 
     <header class="border-b border-[var(--color-rule)] bg-[var(--color-paper)]/85 backdrop-blur-md sticky top-0 z-20">
@@ -106,27 +103,18 @@ const here = Astro.url.pathname.replace(base, '') || '/';
         </div>
       </div>
     </footer>
-    <!-- Randomise blob positions + shapes on every page load -->
+    <!-- Randomise circle size + position on every page load -->
     <script is:inline>
       (function () {
         function r(min, max) { return min + Math.random() * (max - min); }
-        function blobRadius() {
-          var v = function () { return Math.round(r(26, 74)); };
-          return v()+'% '+v()+'% '+v()+'% '+v()+'% / '+v()+'% '+v()+'% '+v()+'% '+v()+'%';
-        }
-        // Three loose zones keep the blobs spread across the viewport
-        var zones = [
-          [r(-20, 22), r(-18, 32)],   // upper-left region
-          [r(22, 62),  r(24, 62)],    // lower-right region
-          [r(6,  52),  r(6,  52)],    // centre region
-        ];
-        var blobs = document.querySelectorAll('[data-blob]');
-        blobs.forEach(function (el, i) {
-          el.style.left         = zones[i][0] + 'vw';
-          el.style.top          = zones[i][1] + 'vh';
-          el.style.right        = 'auto';
-          el.style.bottom       = 'auto';
-          el.style.borderRadius = blobRadius();
+        document.querySelectorAll('[data-blob]').forEach(function (el) {
+          var size = r(30, 70);          // diameter in vmin — keeps circles round at any aspect ratio
+          var x    = r(-size/4, 100 - size*0.75); // vw, allow partial off-screen
+          var y    = r(-size/4, 100 - size*0.75); // vh
+          el.style.width  = size + 'vmin';
+          el.style.height = size + 'vmin';
+          el.style.left   = x + 'vw';
+          el.style.top    = y + 'vh';
         });
       })();
     </script>
