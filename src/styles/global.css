@@ -149,12 +149,25 @@ a.editorial:hover {
   55%       { transform: translate(2vw,  -3vh); }
 }
 
+@keyframes drift-4 {
+  0%, 100% { transform: translate(0,    0);    }
+  45%       { transform: translate(-2vw, 3vh);  }
+}
+@keyframes drift-5 {
+  0%, 100% { transform: translate(0,    0);    }
+  60%       { transform: translate(3vw,  2vh);  }
+}
+
 .ambient-shape-1 { animation: drift-1 90s  ease-in-out infinite; }
 .ambient-shape-2 { animation: drift-2 115s ease-in-out infinite; }
 .ambient-shape-3 { animation: drift-3 75s  ease-in-out infinite; }
+.ambient-shape-4 { animation: drift-4 100s ease-in-out infinite; }
+.ambient-shape-5 { animation: drift-5 85s  ease-in-out infinite; }
 
 @media (prefers-reduced-motion: reduce) {
   .ambient-shape-1,
   .ambient-shape-2,
-  .ambient-shape-3 { animation: none; }
+  .ambient-shape-3,
+  .ambient-shape-4,
+  .ambient-shape-5 { animation: none; }
 }

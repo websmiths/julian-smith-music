@@ -31,11 +31,8 @@ const here = Astro.url.pathname.replace(base, '') || '/';
          body's isolated stacking context. CSS border-radius with 8 values
          creates organic amorphous shapes; mix-blend-mode:multiply makes
          overlapping areas visibly darken. -->
-    <div aria-hidden="true" style="position:fixed;inset:0;z-index:-1;pointer-events:none;">
-      <!-- Size, position randomised by the inline script below -->
-      <div data-blob class="ambient-shape-1" style="position:absolute;background:rgba(100,148,112,0.07);border-radius:50%;mix-blend-mode:multiply;"></div>
-      <div data-blob class="ambient-shape-2" style="position:absolute;background:rgba(70,108,152,0.07);border-radius:50%;mix-blend-mode:multiply;"></div>
-      <div data-blob class="ambient-shape-3" style="position:absolute;background:rgba(138,118,90,0.06);border-radius:50%;mix-blend-mode:multiply;"></div>
+    <div data-blobs aria-hidden="true" style="position:fixed;inset:0;z-index:-1;pointer-events:none;">
+      <!-- Circles generated and randomised by the inline script below -->
     </div>
 
     <header class="border-b border-[var(--color-rule)] bg-[var(--color-paper)]/85 backdrop-blur-md sticky top-0 z-20">
@@ -103,19 +100,37 @@ const here = Astro.url.pathname.replace(base, '') || '/';
         </div>
       </div>
     </footer>
-    <!-- Randomise circle size + position on every page load -->
+    <!-- Generate 3–5 circles, each randomised in size and position -->
     <script is:inline>
       (function () {
         function r(min, max) { return min + Math.random() * (max - min); }
-        document.querySelectorAll('[data-blob]').forEach(function (el) {
-          var size = r(40, 130);         // diameter in vmin — keeps circles round at any aspect ratio
-          var x    = r(-size/4, 100 - size*0.75); // vw, allow partial off-screen
-          var y    = r(-size/4, 100 - size*0.75); // vh
-          el.style.width  = size + 'vmin';
-          el.style.height = size + 'vmin';
-          el.style.left   = x + 'vw';
-          el.style.top    = y + 'vh';
-        });
+        var colors = [
+          'rgba(100,148,112,0.07)',
+          'rgba(70,108,152,0.07)',
+          'rgba(138,118,90,0.06)',
+          'rgba(100,148,112,0.06)',
+          'rgba(70,108,152,0.06)',
+        ];
+        var container = document.querySelector('[data-blobs]');
+        var count = Math.round(r(3, 5));
+        for (var i = 0; i < count; i++) {
+          var size = r(40, 130);
+          var x    = r(-size / 4, 100 - size * 0.75);
+          var y    = r(-size / 4, 100 - size * 0.75);
+          var el   = document.createElement('div');
+          el.className = 'ambient-shape-' + (i + 1);
+          el.style.cssText = [
+            'position:absolute',
+            'border-radius:50%',
+            'mix-blend-mode:multiply',
+            'width:'  + size + 'vmin',
+            'height:' + size + 'vmin',
+            'left:'   + x    + 'vw',
+            'top:'    + y    + 'vh',
+            'background:' + colors[i],
+          ].join(';');
+          container.appendChild(el);
+        }
       })();
     </script>
   </body>
