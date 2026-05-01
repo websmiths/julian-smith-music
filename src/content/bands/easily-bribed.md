@@ -7,6 +7,7 @@ accent: folk
 era: "Short-lived"
 region: "Northern Rivers NSW"
 blurb: "A short-lived project; a Facebook page is thought to exist. Details pending."
+image: "/images/easily-bribed.jpg"
 featured: false
 confirmed: false
 ---

@@ -9,6 +9,7 @@ region: "—"
 blurb: "A subbing role; small online footprint. Details pending."
 links:
   facebook: "https://www.facebook.com/AlsUpstarts/"
+image: "/images/al-and-the-upstarts.jpg"
 featured: false
 confirmed: false
 ---

@@ -10,7 +10,7 @@ blurb: "A jazz duo: double bass and keys, with occasional trumpet. No online pre
 members:
   - "Julian Smith — double bass"
   - "(plus keys, occasional trumpet)"
-image: "/images/jam-tart.jpg"
+image: "/images/jam-tart-2.jpg"
 featured: false
 confirmed: true
 ---
