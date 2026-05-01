@@ -6,7 +6,7 @@ export const site = {
   bioSource: { label: 'Music Collective Australia', url: 'https://musiccollective.com.au/listing/julian-smith/' },
   email: '',
   social: {
-    facebook: '', // e.g. https://www.facebook.com/juliansmithplaysmusic — confirm URL
+    facebook: 'https://www.facebook.com/JulianSmithPlays',
   },
   nav: [
     { label: 'Bands', href: '/bands' },
