@@ -29,6 +29,9 @@ discography:
     notes: "Pre-Julian."
     julianOn: false
 festivals:
+  - "Woodford Folk Festival (multiple)"
+  - "Mitchell Creek Rock 'n' Blues"
+  - "Redlands Bayside Blues Festival"
   - "Nimbin MardiGrass 2025"
   - "Maleny Folk Festival (origins)"
 quote:

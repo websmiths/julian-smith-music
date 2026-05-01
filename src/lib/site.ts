@@ -1,12 +1,14 @@
 export const site = {
   name: 'Julian Smith',
-  tagline: 'Bass · Flute · Multi-instrumentalist',
+  tagline: 'Bass and flute, Northern Rivers',
   region: 'Northern Rivers, NSW',
   bio: 'Plays mainly basses and flute, although occasionally tinkers with other things, and plays regularly in several bands with styles ranging between funk, folk, blues, jazz, latin, and various world influences. Anything with harmony and groove gets him going.',
   bioSource: { label: 'Music Collective Australia', url: 'https://musiccollective.com.au/listing/julian-smith/' },
-  email: '', // fill in later
+  email: '',
+  social: {
+    facebook: '', // e.g. https://www.facebook.com/juliansmithplaysmusic — confirm URL
+  },
   nav: [
-    { label: 'Home', href: '/' },
     { label: 'Bands', href: '/bands' },
     { label: 'Recordings', href: '/recordings' },
     { label: 'Live', href: '/live' },

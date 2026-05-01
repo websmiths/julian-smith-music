@@ -1,7 +1,7 @@
 ---
 name: "Hootenanny Highway"
 role: core
-julianRole: "Multi-instrumentalist"
+julianRole: "Bass / multi-instrumentalist"
 genres: ["bluegrass", "folk", "old-time"]
 accent: folk
 era: "Current"
@@ -10,7 +10,7 @@ blurb: "All-acoustic old-timey and bluegrass folk; harmony-driven; raises funds 
 members:
   - "Mandy Hawkes — songstress"
   - "Tom Brunnekreef (formerly of Honey & Knives)"
-  - "Julian Smith — \"magnificent multi-instrumentalist\""
+  - "Julian Smith — bass / multi-instrumentalist"
   - "Ash Bell"
   - "Daniel Friel — guest"
   - "Olive Gap Family Band — collective contributors"

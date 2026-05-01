@@ -4,24 +4,31 @@
   --font-display: "Playfair Display", "Source Serif 4", Georgia, serif;
   --font-serif: "Source Serif 4", Georgia, serif;
   --font-sans: "Inter", "Helvetica Neue", Helvetica, Arial, sans-serif;
-  --font-mono: "JetBrains Mono", ui-monospace, monospace;
 
-  /* Editorial palette */
+  /* Paper palette */
   --color-ink: #1a1814;
   --color-ink-soft: #2d2924;
   --color-paper: #f5f1ea;
   --color-paper-warm: #ebe4d6;
-  --color-rule: #d6cdb9;
+  --color-paper-deep: #ded5be;
+  --color-rule: #c9bfa6;
+  --color-rule-soft: #d6cdb9;
   --color-muted: #6b6354;
 
-  /* Genre accents */
-  --color-jazz: #8a3324;
-  --color-blues: #2d4a5c;
-  --color-folk: #5d6d3a;
-  --color-funk: #c46a17;
-  --color-world: #6e3a6f;
-  --color-country: #876a3a;
-  --color-swing: #a04545;
+  /* Dark accent slots — used for panels, CTAs, sidebars */
+  --color-dark: #1f1c17;
+  --color-dark-soft: #2a2620;
+  --color-dark-text: #e8e0cf;
+  --color-dark-muted: #948871;
+
+  /* Genre accents — desaturated, used sparingly */
+  --color-jazz: #7a4a35;
+  --color-blues: #3a5868;
+  --color-folk: #5d6a40;
+  --color-funk: #a06a30;
+  --color-world: #5d3e60;
+  --color-country: #7a6a40;
+  --color-swing: #8a4a4a;
 }
 
 :root {
@@ -42,30 +49,15 @@ body {
   color: var(--color-ink);
 }
 
-.dropcap::first-letter {
-  font-family: var(--font-display);
-  float: left;
-  font-size: 4.5rem;
-  line-height: 0.85;
-  padding: 0.45rem 0.65rem 0 0;
-  font-weight: 700;
-}
-
 .rule {
   border: 0;
   height: 1px;
   background: var(--color-rule);
 }
 
-.rule-thick {
-  border: 0;
-  height: 4px;
-  background: linear-gradient(to right, var(--color-ink) 0 1.5rem, transparent 1.5rem 100%);
-}
-
 .eyebrow {
   font-family: var(--font-sans);
-  font-size: 0.72rem;
+  font-size: 0.7rem;
   letter-spacing: 0.18em;
   text-transform: uppercase;
   font-weight: 600;
@@ -77,18 +69,20 @@ body {
   align-items: center;
   gap: 0.35rem;
   font-family: var(--font-sans);
-  font-size: 0.72rem;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-  padding: 0.25rem 0.6rem;
-  border: 1px solid var(--color-rule);
-  border-radius: 9999px;
-  background: var(--color-paper);
+  font-size: 0.7rem;
+  letter-spacing: 0.04em;
+  padding: 0.22rem 0.55rem;
+  border: 1px solid var(--color-rule-soft);
+  background: transparent;
   color: var(--color-ink-soft);
-  transition: background 0.15s ease, border-color 0.15s ease;
+  transition: border-color 0.15s ease, background 0.15s ease;
+  cursor: pointer;
 }
 
-.chip:hover { background: var(--color-paper-warm); }
+.chip:hover {
+  border-color: var(--color-ink);
+  background: var(--color-paper-warm);
+}
 
 .chip[data-active="true"] {
   background: var(--color-ink);
@@ -98,19 +92,39 @@ body {
 
 .pullquote {
   font-family: var(--font-display);
-  font-size: clamp(1.5rem, 3vw, 2.25rem);
-  line-height: 1.18;
+  font-size: clamp(1.25rem, 2.4vw, 1.7rem);
+  line-height: 1.4;
   font-style: italic;
   color: var(--color-ink-soft);
-  border-left: 4px solid var(--color-ink);
+  border-left: 2px solid var(--color-ink);
   padding-left: 1.25rem;
   margin: 2rem 0;
 }
 
 a.editorial {
-  background-image: linear-gradient(transparent calc(100% - 1px), currentColor 1px);
-  background-repeat: no-repeat;
-  background-size: 0% 100%;
-  transition: background-size 0.3s ease;
+  color: var(--color-ink);
+  text-decoration: none;
+  border-bottom: 1px solid var(--color-rule);
+  transition: border-color 0.2s ease;
 }
-a.editorial:hover { background-size: 100% 100%; }
+a.editorial:hover {
+  border-bottom-color: var(--color-ink);
+}
+
+/* Dark panel — for accent areas inside the warm site */
+.panel-dark {
+  background: var(--color-dark);
+  color: var(--color-dark-text);
+}
+.panel-dark .eyebrow { color: var(--color-dark-muted); }
+.panel-dark a.editorial {
+  color: var(--color-dark-text);
+  border-bottom-color: var(--color-dark-muted);
+}
+.panel-dark a.editorial:hover { border-bottom-color: var(--color-dark-text); }
+.panel-dark .pullquote {
+  color: var(--color-dark-text);
+  border-left-color: var(--color-dark-muted);
+}
+
+::selection { background: var(--color-ink); color: var(--color-paper); }

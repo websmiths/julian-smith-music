@@ -18,97 +18,85 @@ const roleCounts = bands.reduce<Record<string, number>>((acc, b) => {
 const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 ---
 <Base>
+  <!-- Asymmetric two-column hero with portrait slot -->
   <section class="border-b border-[var(--color-rule)]">
-    <div class="mx-auto max-w-6xl px-6 pt-12 pb-8 grid md:grid-cols-12 gap-8 items-end">
-      <div class="md:col-span-8">
-        <p class="eyebrow mb-3">A working musician's archive · est. {new Date().getFullYear()}</p>
-        <h1 class="font-[var(--font-display)] font-black text-5xl md:text-7xl leading-[0.95] tracking-tight">
-          Julian Smith,<br />
-          <span class="italic font-medium text-[var(--color-ink-soft)]">on bass &amp; flute &amp; whatever else.</span>
+    <div class="mx-auto max-w-6xl px-6 py-14 grid md:grid-cols-12 gap-10 items-start">
+      <div class="md:col-span-7">
+        <h1 class="font-[var(--font-display)] font-bold text-4xl md:text-5xl leading-[1.05] tracking-tight">
+          Julian Smith
         </h1>
-        <p class="mt-6 max-w-2xl text-lg leading-relaxed text-[var(--color-ink-soft)]">
-          Northern Rivers, NSW. Several decades on stages and in studios across jazz, folk, blues, funk and points further afield. Core member of {roleCounts.core ?? 0} bands; substitute on a few more; session work; live sound.
+        <p class="mt-2 font-[var(--font-display)] italic text-2xl md:text-3xl text-[var(--color-ink-soft)]">
+          Bass and flute, Northern Rivers.
         </p>
+        <p class="mt-6 max-w-xl text-[var(--color-ink-soft)] leading-relaxed">
+          Plays in {roleCounts.core ?? 0} bands across jazz, folk, blues, funk
+          and various world influences. Also subs on bass for several
+          others, sessions when needed, and runs live sound.
+        </p>
+        <div class="mt-6 flex flex-wrap gap-x-6 gap-y-2 text-sm font-[var(--font-sans)]">
+          <a href={`${base}/bands`} class="text-[var(--color-ink)] border-b border-[var(--color-rule)] hover:border-[var(--color-ink)] pb-0.5">Browse the bands</a>
+          <a href={`${base}/for-hire`} class="text-[var(--color-ink-soft)] hover:text-[var(--color-ink)] pb-0.5">For hire</a>
+        </div>
       </div>
-      <div class="md:col-span-4 md:text-right">
-        <a href={`${base}/for-hire`} class="inline-block bg-[var(--color-ink)] text-[var(--color-paper)] px-6 py-3 font-[var(--font-sans)] text-sm uppercase tracking-widest hover:bg-[var(--color-ink-soft)] transition-colors">
-          Available for hire
-        </a>
-        <p class="mt-3 text-xs text-[var(--color-muted)] font-[var(--font-sans)] uppercase tracking-widest">
-          {allCount} projects logged
+      <div class="md:col-span-5">
+        <div class="aspect-[4/5] bg-[var(--color-paper-deep)] border border-[var(--color-rule-soft)] overflow-hidden">
+          <img src={`${base}/images/portrait.jpg`} alt="Julian Smith" class="w-full h-full object-cover" onerror="this.style.display='none'" />
+        </div>
+        <p class="mt-2 text-xs text-[var(--color-muted)] font-[var(--font-sans)]">
+          Drop a portrait at <code>public/images/portrait.jpg</code> to fill this.
         </p>
       </div>
     </div>
   </section>
 
-  <section class="bg-[var(--color-paper-warm)] border-b border-[var(--color-rule)]">
-    <div class="mx-auto max-w-4xl px-6 py-16 text-center">
-      <p class="eyebrow mb-5">In his own words</p>
-      <blockquote class="font-[var(--font-display)] italic text-2xl md:text-4xl leading-snug text-[var(--color-ink)]">
-        &ldquo;{site.bio}&rdquo;
-      </blockquote>
+  <!-- Bio quote on dark accent panel -->
+  <section class="panel-dark">
+    <div class="mx-auto max-w-3xl px-6 py-12">
+      <p class="eyebrow mb-4">Bio</p>
+      <blockquote class="pullquote">&ldquo;{site.bio}&rdquo;</blockquote>
       {site.bioSource && (
-        <p class="mt-6 text-sm text-[var(--color-muted)] font-[var(--font-sans)]">
+        <p class="text-xs text-[var(--color-dark-muted)] font-[var(--font-sans)]">
           via <a href={site.bioSource.url} class="editorial">{site.bioSource.label}</a>
         </p>
       )}
     </div>
   </section>
 
-  <section class="border-b border-[var(--color-rule)]">
-    <div class="mx-auto max-w-6xl px-6 py-12 grid grid-cols-2 md:grid-cols-5 gap-6 text-center">
-      {[
-        { label: 'Double bass', sub: 'upright' },
-        { label: 'Electric bass', sub: '4 / 5 string' },
-        { label: 'Flute', sub: 'C / alto' },
-        { label: 'Percussion', sub: 'congas / hand' },
-        { label: 'Harmony vocals', sub: 'BVs' },
-      ].map(({ label, sub }) => (
-        <div class="py-4">
-          <p class="font-[var(--font-display)] text-lg md:text-xl font-bold">{label}</p>
-          <p class="mt-1 eyebrow">{sub}</p>
-        </div>
-      ))}
-    </div>
-  </section>
-
+  <!-- Featured bands + browse-by, integrated -->
   <section>
-    <div class="mx-auto max-w-6xl px-6 py-16">
-      <div class="flex items-end justify-between mb-8 border-b border-[var(--color-rule)] pb-4">
-        <div>
-          <p class="eyebrow mb-2">Featured</p>
-          <h2 class="font-[var(--font-display)] text-4xl font-bold">Bands</h2>
+    <div class="mx-auto max-w-6xl px-6 py-14 grid md:grid-cols-12 gap-8">
+      <div class="md:col-span-8">
+        <div class="flex items-end justify-between mb-5 border-b border-[var(--color-rule)] pb-3">
+          <h2 class="font-[var(--font-display)] text-2xl font-bold">Featured bands</h2>
+          <a href={`${base}/bands`} class="font-[var(--font-sans)] text-sm text-[var(--color-ink-soft)] hover:text-[var(--color-ink)]">All {allCount} →</a>
         </div>
-        <a href={`${base}/bands`} class="editorial font-[var(--font-sans)] text-sm">See all {allCount} →</a>
+        <div class="grid sm:grid-cols-2 gap-4">
+          {featured.map((band) => <BandCard band={band} />)}
+        </div>
       </div>
-      <div class="grid md:grid-cols-2 gap-6">
-        {featured.map((band) => <BandCard band={band} feature={true} />)}
-      </div>
-    </div>
-  </section>
-
-  <section class="border-t border-[var(--color-rule)] bg-[var(--color-paper-warm)]">
-    <div class="mx-auto max-w-6xl px-6 py-16">
-      <p class="eyebrow mb-2">Browse by</p>
-      <h2 class="font-[var(--font-display)] text-3xl font-bold mb-8">A few ways in</h2>
-      <div class="grid md:grid-cols-3 gap-6">
-        {[
-          { href: '/bands?role=core', label: 'Core member', count: roleCounts.core ?? 0, blurb: 'Bands where Julian is part of the working line-up.' },
-          { href: '/bands?role=sub', label: 'Sub / stand-in', count: roleCounts.sub ?? 0, blurb: 'Bands he covers when their bass player can\'t make it.' },
-          { href: '/bands?role=session', label: 'Studio sessions', count: roleCounts.session ?? 0, blurb: 'Recording work — released and forthcoming.' },
-          { href: '/recordings', label: 'Recordings', count: '·', blurb: 'Discography across all projects.' },
-          { href: '/live', label: 'Live & festivals', count: '·', blurb: 'Festivals, venues and the long road from Lithgow to Cairns.' },
-          { href: '/for-hire', label: 'For hire', count: '·', blurb: 'Genres, instruments, what to email about.' },
-        ].map((item) => (
-          <a href={`${base}${item.href}`} class="block p-6 border border-[var(--color-rule)] bg-[var(--color-paper)] hover:border-[var(--color-ink)] transition-colors">
-            <p class="font-[var(--font-display)] text-2xl font-bold flex items-baseline gap-2">
-              {item.label}
-              <span class="text-sm font-normal text-[var(--color-muted)]">({item.count})</span>
-            </p>
-            <p class="mt-2 text-sm text-[var(--color-ink-soft)] leading-snug">{item.blurb}</p>
-          </a>
-        ))}
-      </div>
+      <aside class="md:col-span-4 space-y-7 font-[var(--font-sans)] text-sm md:border-l md:border-[var(--color-rule)] md:pl-8">
+        <div>
+          <p class="eyebrow mb-2">Plays</p>
+          <ul class="space-y-1 text-[var(--color-ink)]">
+            <li>Double bass</li>
+            <li>Electric bass</li>
+            <li>Flute</li>
+            <li>Hand percussion</li>
+            <li>Harmony vocals</li>
+          </ul>
+        </div>
+        <div>
+          <p class="eyebrow mb-2">Browse by</p>
+          <ul class="space-y-1.5">
+            <li><a href={`${base}/bands?role=core`} class="text-[var(--color-ink)] hover:underline">Core member <span class="text-[var(--color-muted)]">({roleCounts.core ?? 0})</span></a></li>
+            <li><a href={`${base}/bands?role=sub`} class="text-[var(--color-ink)] hover:underline">Sub / stand-in <span class="text-[var(--color-muted)]">({roleCounts.sub ?? 0})</span></a></li>
+            <li><a href={`${base}/bands?role=session`} class="text-[var(--color-ink)] hover:underline">Studio session <span class="text-[var(--color-muted)]">({roleCounts.session ?? 0})</span></a></li>
+            <li><a href={`${base}/recordings`} class="text-[var(--color-ink)] hover:underline">Recordings</a></li>
+            <li><a href={`${base}/live`} class="text-[var(--color-ink)] hover:underline">Festivals &amp; venues</a></li>
+            <li><a href={`${base}/for-hire`} class="text-[var(--color-ink)] hover:underline">For hire</a></li>
+          </ul>
+        </div>
+      </aside>
     </div>
   </section>
 </Base>

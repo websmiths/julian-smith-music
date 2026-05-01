@@ -1,0 +1,114 @@
+---
+import { getCollection } from 'astro:content';
+import Base from '../layouts/Base.astro';
+import { site, type GenreKey } from '../lib/site';
+
+const bands = (await getCollection('bands')).sort((a, b) =>
+  (b.data.yearStart ?? 0) - (a.data.yearStart ?? 0)
+);
+const featured = bands.filter((b) => b.data.featured).slice(0, 3);
+const allCount = bands.length;
+const roleCounts = bands.reduce<Record<string, number>>((acc, b) => {
+  acc[b.data.role] = (acc[b.data.role] ?? 0) + 1;
+  return acc;
+}, {});
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+const lead = featured[0];
+const others = featured.slice(1);
+---
+<Base title="Layout · Mosaic">
+  <div class="mx-auto max-w-6xl px-6 py-10">
+    <p class="eyebrow mb-3">Layout · Mosaic</p>
+
+    <!-- Mosaic grid: name+intro spans wide; portrait next to it; bio + browse + bands fill -->
+    <div class="grid grid-cols-12 gap-3 auto-rows-[minmax(0,auto)]">
+      <!-- Name + intro -->
+      <div class="col-span-12 md:col-span-8 border border-[var(--color-rule-soft)] p-6 md:p-8 bg-[var(--color-paper)]">
+        <h1 class="font-[var(--font-display)] font-bold text-4xl md:text-5xl leading-[1.05] tracking-tight">Julian Smith</h1>
+        <p class="font-[var(--font-display)] italic text-xl md:text-2xl text-[var(--color-ink-soft)] mt-1">Bass and flute, Northern Rivers.</p>
+        <p class="mt-4 text-[var(--color-ink-soft)] leading-relaxed max-w-xl">
+          Plays in {roleCounts.core ?? 0} bands across jazz, folk, blues, funk
+          and various world influences. Subs, sessions, live sound.
+        </p>
+      </div>
+
+      <!-- Portrait -->
+      <div class="col-span-12 md:col-span-4 border border-[var(--color-rule-soft)] bg-[var(--color-paper-deep)] aspect-[4/5] md:aspect-auto overflow-hidden">
+        <img src={`${base}/images/portrait.jpg`} alt="Julian Smith" class="w-full h-full object-cover" onerror="this.style.display='none'" />
+      </div>
+
+      <!-- Bio quote on dark panel -->
+      <div class="col-span-12 md:col-span-7 panel-dark p-6 md:p-8">
+        <p class="eyebrow mb-3">Bio</p>
+        <blockquote class="font-[var(--font-display)] italic text-xl md:text-2xl leading-snug text-[var(--color-dark-text)]">
+          &ldquo;{site.bio}&rdquo;
+        </blockquote>
+        {site.bioSource && (
+          <p class="mt-4 text-xs text-[var(--color-dark-muted)] font-[var(--font-sans)]">
+            via <a href={site.bioSource.url} class="editorial">{site.bioSource.label}</a>
+          </p>
+        )}
+      </div>
+
+      <!-- Browse-by panel -->
+      <div class="col-span-6 md:col-span-3 border border-[var(--color-rule-soft)] p-5 bg-[var(--color-paper-warm)] font-[var(--font-sans)] text-sm">
+        <p class="eyebrow mb-3">Browse</p>
+        <ul class="space-y-1">
+          <li><a href={`${base}/bands?role=core`} class="hover:underline">Core <span class="text-[var(--color-muted)]">({roleCounts.core ?? 0})</span></a></li>
+          <li><a href={`${base}/bands?role=sub`} class="hover:underline">Sub <span class="text-[var(--color-muted)]">({roleCounts.sub ?? 0})</span></a></li>
+          <li><a href={`${base}/bands?role=session`} class="hover:underline">Session <span class="text-[var(--color-muted)]">({roleCounts.session ?? 0})</span></a></li>
+          <li><a href={`${base}/recordings`} class="hover:underline">Recordings</a></li>
+          <li><a href={`${base}/live`} class="hover:underline">Live</a></li>
+          <li><a href={`${base}/for-hire`} class="hover:underline">For hire</a></li>
+        </ul>
+      </div>
+
+      <!-- Plays panel -->
+      <div class="col-span-6 md:col-span-2 border border-[var(--color-rule-soft)] p-5 font-[var(--font-sans)] text-sm">
+        <p class="eyebrow mb-3">Plays</p>
+        <ul class="space-y-0.5">
+          <li>Double bass</li>
+          <li>Electric bass</li>
+          <li>Flute</li>
+          <li>Percussion</li>
+          <li>Harmonies</li>
+        </ul>
+      </div>
+
+      <!-- Lead featured band card -->
+      {lead && (
+        <a href={`${base}/bands/${lead.id}`} class="col-span-12 md:col-span-7 border border-[var(--color-rule-soft)] p-6 hover:border-[var(--color-ink)] transition-colors group">
+          <p class="eyebrow mb-2">Featured · {site.roleLabels[lead.data.role]}</p>
+          <h3 class="font-[var(--font-display)] font-bold text-3xl md:text-4xl leading-tight">{lead.data.name}</h3>
+          <p class="text-xs text-[var(--color-muted)] font-[var(--font-sans)] mt-1">{lead.data.era}{lead.data.region ? ` · ${lead.data.region}` : ''}</p>
+          <p class="mt-3 text-[var(--color-ink-soft)] leading-relaxed">{lead.data.blurb}</p>
+          <div class="mt-3 flex flex-wrap gap-1">
+            {lead.data.genres.map((g) => <span class="chip">{site.genreLabels[g as GenreKey] ?? g}</span>)}
+          </div>
+        </a>
+      )}
+
+      <!-- Other featured bands -->
+      <div class="col-span-12 md:col-span-5 grid grid-cols-1 gap-3">
+        {others.map((band) => (
+          <a href={`${base}/bands/${band.id}`} class="block border border-[var(--color-rule-soft)] p-5 hover:border-[var(--color-ink)] transition-colors">
+            <p class="eyebrow mb-1">{site.roleLabels[band.data.role]}</p>
+            <h3 class="font-[var(--font-display)] font-bold text-xl">{band.data.name}</h3>
+            <p class="text-xs text-[var(--color-muted)] font-[var(--font-sans)] mt-1">{band.data.era}</p>
+            <p class="mt-2 text-sm text-[var(--color-ink-soft)] leading-snug line-clamp-3">{band.data.blurb}</p>
+          </a>
+        ))}
+      </div>
+
+      <!-- All bands link spans bottom -->
+      <a href={`${base}/bands`} class="col-span-12 border border-[var(--color-rule-soft)] p-5 hover:border-[var(--color-ink)] transition-colors flex items-baseline justify-between font-[var(--font-sans)] text-sm">
+        <span>See all {allCount} bands, filterable by role and genre</span>
+        <span class="text-[var(--color-ink-soft)]">→</span>
+      </a>
+    </div>
+
+    <p class="mt-8 text-xs text-[var(--color-muted)] font-[var(--font-sans)]">
+      Layout option · Mosaic. <a href={`${base}/`} class="editorial">Back to original</a> · <a href={`${base}/layout-sidebar`} class="editorial">Try sidebar</a>
+    </p>
+  </div>
+</Base>

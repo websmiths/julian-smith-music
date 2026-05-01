@@ -18,7 +18,6 @@ festivals:
   - "Wingham Akoostik 2019"
   - "NORPA 2020 launch"
   - "Acoustic Fringe Festival"
-  - "Supports for Old Man Luedeke; shared bills with Elliott Brood and Ozomatli"
 quote:
   text: "Swings between sweet harmony-heavy front porch folk, and foot-stompin' hillbilly barn-burners."
   attribution: "Band's own"

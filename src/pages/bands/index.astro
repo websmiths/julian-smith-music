@@ -24,11 +24,11 @@ const bandsJson = bands.map((b) => ({
 ---
 <Base title="Bands" description="Every band Julian Smith has played with — core, sub, session and video — across the Northern Rivers and beyond.">
   <section class="border-b border-[var(--color-rule)]">
-    <div class="mx-auto max-w-6xl px-6 pt-12 pb-8">
-      <p class="eyebrow mb-3">The catalogue</p>
-      <h1 class="font-[var(--font-display)] font-black text-5xl md:text-6xl leading-tight">Bands</h1>
-      <p class="mt-4 max-w-2xl text-lg text-[var(--color-ink-soft)]">
-        Everything in one place. Filter by role or genre. Some entries are well-documented online; others — particularly the older Bathurst-era projects — survive mostly in memory.
+    <div class="mx-auto max-w-6xl px-6 py-14">
+      <p class="eyebrow mb-3">Bands</p>
+      <h1 class="font-[var(--font-display)] font-bold text-5xl md:text-6xl leading-tight">All projects</h1>
+      <p class="mt-4 max-w-2xl text-[var(--color-ink-soft)] leading-relaxed">
+        Filter by role or genre. Some entries are well-documented online; the older Bathurst-era ones are mostly from memory.
       </p>
     </div>
   </section>
@@ -61,7 +61,7 @@ const bandsJson = bands.map((b) => ({
           </div>
         ))}
       </div>
-      <p id="empty-state" class="hidden text-center py-12 text-[var(--color-muted)] font-[var(--font-sans)]">
+      <p id="empty-state" class="hidden text-center py-12 text-[var(--color-muted)] font-[var(--font-sans)] text-sm">
         No bands match those filters.
       </p>
     </div>

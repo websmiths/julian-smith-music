@@ -35,6 +35,8 @@ discography:
     notes: "10 originals, recorded at The Barn Studio, Plainland QLD."
     bandcamp: "https://themagnificence.bandcamp.com/album/3am-fried-chicken"
 festivals:
+  - "Black Mountain Unplugged (twice)"
+  - "Jumpers & Jazz, Warwick QLD"
   - "Bello Fest 2018"
   - "Eat the Street Festival, Lismore"
   - "Nimbin Bush Theatre Cafe"

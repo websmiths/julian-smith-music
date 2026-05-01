@@ -14,42 +14,64 @@ interface Props {
       region?: string;
       blurb: string;
       confirmed: boolean;
+      image?: string;
     };
   };
   feature?: boolean;
+  variant?: 'paper' | 'dark';
 }
 
-const { band, feature = false } = Astro.props;
+const { band, feature = false, variant = 'paper' } = Astro.props;
 const base = import.meta.env.BASE_URL.replace(/\/$/, '');
-const accent = band.data.accent ?? 'jazz';
+const dark = variant === 'dark';
 ---
 <a
   href={`${base}/bands/${band.id}`}
   class:list={[
-    'group block border border-[var(--color-rule)] bg-[var(--color-paper)] p-6 hover:border-[var(--color-ink)] transition-colors',
-    feature && 'md:p-8',
+    'group block border transition-colors',
+    dark
+      ? 'border-[var(--color-dark-soft)] bg-[var(--color-dark-soft)] hover:border-[var(--color-dark-text)]'
+      : 'border-[var(--color-rule-soft)] bg-[var(--color-paper)] hover:border-[var(--color-ink)]',
+    feature ? 'p-6' : 'p-5',
   ]}
-  style={`--accent: var(--color-${accent})`}
 >
-  <div class="flex items-start justify-between gap-4 mb-3">
-    <span class="eyebrow" style="color: var(--accent)">{site.roleLabels[band.data.role]}</span>
-    {!band.data.confirmed && <span class="eyebrow text-[var(--color-muted)]" title="More info coming">DRAFT</span>}
+  {band.data.image && (
+    <div class="aspect-[16/9] -mx-6 -mt-6 mb-5 bg-[var(--color-paper-deep)] overflow-hidden">
+      <img src={`${base}${band.data.image}`} alt={band.data.name} class="w-full h-full object-cover transition-opacity group-hover:opacity-90" />
+    </div>
+  )}
+  <div class="flex items-baseline justify-between gap-4 mb-2">
+    <span class="eyebrow">{site.roleLabels[band.data.role]}</span>
+    {!band.data.confirmed && <span class="eyebrow opacity-70">draft</span>}
   </div>
-  <h3 class:list={['font-[var(--font-display)] font-bold leading-tight', feature ? 'text-3xl md:text-4xl' : 'text-2xl']}>
+  <h3 class:list={[
+    'font-[var(--font-display)] font-bold leading-tight',
+    feature ? 'text-2xl md:text-3xl' : 'text-xl',
+    dark ? 'text-[var(--color-dark-text)]' : 'text-[var(--color-ink)]',
+  ]}>
     {band.data.name}
   </h3>
-  <p class="mt-1 text-sm text-[var(--color-muted)] font-[var(--font-sans)]">
+  <p class:list={[
+    'mt-1 text-xs font-[var(--font-sans)]',
+    dark ? 'text-[var(--color-dark-muted)]' : 'text-[var(--color-muted)]',
+  ]}>
     {band.data.era}{band.data.region ? ` · ${band.data.region}` : ''}
   </p>
-  <p class="mt-3 text-[var(--color-ink-soft)] leading-snug">
+  <p class:list={[
+    'mt-3 text-sm leading-relaxed',
+    dark ? 'text-[var(--color-dark-text)]' : 'text-[var(--color-ink-soft)]',
+  ]}>
     {band.data.blurb}
   </p>
-  <div class="mt-4 flex flex-wrap gap-1.5">
+  <div class="mt-4 flex flex-wrap gap-1">
     {band.data.genres.map((g) => (
       <span class="chip">{site.genreLabels[g as GenreKey] ?? g}</span>
     ))}
   </div>
-  <p class="mt-4 text-xs font-[var(--font-sans)] uppercase tracking-wider text-[var(--color-muted)]">
-    Julian: <span class="text-[var(--color-ink-soft)] normal-case tracking-normal">{band.data.julianRole}</span>
+  <p class:list={[
+    'mt-4 text-xs font-[var(--font-sans)]',
+    dark ? 'text-[var(--color-dark-muted)]' : 'text-[var(--color-muted)]',
+  ]}>
+    {band.data.julianRole}
   </p>
 </a>

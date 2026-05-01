@@ -30,5 +30,8 @@ pnpm-debug.log*
 *.sln
 *.sw?
 
-# notes (private working dossier — comment this out if you want to publish it)
-# notes/
+# notes (private working dossier)
+notes/
+
+# claude code local
+.claude/settings.local.json

@@ -1,7 +1,7 @@
 ---
 name: "The BlueSkillet Rovers"
 role: core
-julianRole: "Upright bass — \"Jazz extraordinaire\""
+julianRole: "Upright bass"
 genres: ["skiffle", "old-time", "blues"]
 accent: blues
 era: "Early 2000s–"
@@ -12,18 +12,16 @@ members:
   - "Matt Elliott — multi-instrumentalist"
   - "Miss Jodie — multi-instrumentalist"
   - "Josh Rust — \"Blues Historian\""
-  - "Julian Smith — \"Jazz extraordinaire\" (upright bass)"
-  - "Glenn Kellett — \"Jazz extraordinaire\""
-  - "Ben VanKleef — \"Big Band conductor and Street Parader\""
-  - "Scotty Crommuntuyn — \"Megaphone Man\""
+  - "Julian Smith — upright bass"
+  - "Glenn Kellett"
+  - "Ben VanKleef — brass"
+  - "Scotty Crommuntuyn"
 festivals:
-  - "Woodford Folk Festival"
+  - "Woodford Folk Festival (multiple)"
   - "Byron Bay Bluesfest"
   - "Blues on Broadbeach"
   - "Gympie Muster"
-  - "Mitchell Creek Rock 'n' Blues"
   - "West End Blues Festival"
-  - "Redlands Bayside Blues Festival 2020"
   - "Jumpers & Jazz, Warwick QLD, 2025"
   - "Commonwealth Games (Gold Coast)"
 quote:
