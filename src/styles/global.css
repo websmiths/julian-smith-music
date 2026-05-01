@@ -44,17 +44,10 @@ html {
   -moz-osx-font-smoothing: grayscale;
 }
 
-/* Ambient background shapes — large colour washes that sit behind
-   all content via background-attachment: fixed. Sections with
-   transparent backgrounds let these show through; panel-dark areas
-   cover them entirely. Degrades gracefully (shows solid paper on iOS). */
+/* Body is transparent so the fixed shape layer in Base.astro shows through.
+   panel-dark sections (solid dark bg) will cover the shapes — intentional. */
 body {
-  background-color: var(--color-paper);
-  background-image:
-    radial-gradient(ellipse 65vw 55vh at 4% 10%,  rgba(112, 158, 120, 0.13) 0%, transparent 70%),
-    radial-gradient(ellipse 55vw 65vh at 94% 80%,  rgba(80, 118, 158, 0.09) 0%, transparent 70%),
-    radial-gradient(ellipse 44vw 34vh at 64% 46%,  rgba(148, 128, 102, 0.06) 0%, transparent 65%);
-  background-attachment: fixed;
+  background: transparent;
   color: var(--color-ink);
 }
 

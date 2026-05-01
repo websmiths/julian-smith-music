@@ -46,7 +46,7 @@ links:
       url: "https://funkafide.com/the-hoochers"
     - label: "Live video — Julian on flute"
       url: "https://www.facebook.com/TheHoochers/videos/jubasqi-julian-smith-funkyblues-funkybluesflute-thehoochers-funkafideproductions/629129906133427/"
-image: "/images/blueskillet-2.jpg"
+image: "/images/hoochers-1.jpg"
 featured: true
 confirmed: true
 ---

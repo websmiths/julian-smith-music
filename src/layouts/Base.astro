@@ -26,6 +26,17 @@ const here = Astro.url.pathname.replace(base, '') || '/';
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;0,900;1,400;1,700&family=Source+Serif+4:ital,opsz,wght@0,8..60,300;0,8..60,400;0,8..60,500;0,8..60,600;1,8..60,400&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
   </head>
   <body class="min-h-screen flex flex-col">
+
+    <!-- Ambient background shapes: fixed to viewport, behind all content -->
+    <div aria-hidden="true" style="position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden;">
+      <!-- Upper-left: sage green -->
+      <div style="position:absolute;width:70vw;height:60vh;top:-8%;left:-12%;border-radius:50%;background:rgba(112,158,120,0.18);filter:blur(90px);"></div>
+      <!-- Lower-right: grey-blue -->
+      <div style="position:absolute;width:65vw;height:70vh;bottom:-12%;right:-10%;border-radius:50%;background:rgba(80,118,158,0.13);filter:blur(90px);"></div>
+      <!-- Centre: warm earth -->
+      <div style="position:absolute;width:55vw;height:45vh;top:32%;left:38%;border-radius:50%;background:rgba(148,128,102,0.09);filter:blur(80px);"></div>
+    </div>
+
     <header class="border-b border-[var(--color-rule)] bg-[var(--color-paper)]/85 backdrop-blur-md sticky top-0 z-20">
       <div class="mx-auto max-w-6xl px-6 py-5 flex items-baseline justify-between gap-6">
         <a href={`${base}/`} class="font-[var(--font-display)] text-xl font-bold tracking-tight">
@@ -58,11 +69,11 @@ const here = Astro.url.pathname.replace(base, '') || '/';
       </div>
     </header>
 
-    <main class="flex-1">
+    <main class="flex-1 relative z-10">
       <slot />
     </main>
 
-    <footer class="mt-20 panel-dark">
+    <footer class="mt-20 panel-dark relative z-10">
       <div class="mx-auto max-w-6xl px-6 py-10 grid gap-8 md:grid-cols-3 font-[var(--font-sans)] text-sm">
         <div>
           <p class="font-[var(--font-display)] text-base font-bold">Julian Smith</p>
