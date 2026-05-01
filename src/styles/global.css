@@ -5,29 +5,29 @@
   --font-serif: "Source Serif 4", Georgia, serif;
   --font-sans: "Inter", "Helvetica Neue", Helvetica, Arial, sans-serif;
 
-  /* Paper palette */
-  --color-ink: #1a1814;
-  --color-ink-soft: #2d2924;
-  --color-paper: #f5f1ea;
-  --color-paper-warm: #ebe4d6;
-  --color-paper-deep: #ded5be;
-  --color-rule: #c9bfa6;
-  --color-rule-soft: #d6cdb9;
-  --color-muted: #6b6354;
+  /* Eucalyptus + grey-blue palette */
+  --color-ink: #1e2820;
+  --color-ink-soft: #40554a;
+  --color-paper: #eff1ee;
+  --color-paper-warm: #e6ebe4;
+  --color-paper-deep: #d8dfd6;
+  --color-rule: #c0ccc0;
+  --color-rule-soft: #d4dfd4;
+  --color-muted: #6a7e6d;
 
-  /* Dark accent slots — used for panels, CTAs, sidebars */
-  --color-dark: #1f1c17;
-  --color-dark-soft: #2a2620;
-  --color-dark-text: #e8e0cf;
-  --color-dark-muted: #948871;
+  /* Dark accent — forest charcoal */
+  --color-dark: #1c2620;
+  --color-dark-soft: #283530;
+  --color-dark-text: #e3ede6;
+  --color-dark-muted: #7a9a82;
 
   /* Genre accents — desaturated, used sparingly */
   --color-jazz: #7a4a35;
-  --color-blues: #3a5868;
-  --color-folk: #5d6a40;
-  --color-funk: #a06a30;
+  --color-blues: #3a5a70;
+  --color-folk: #4a6a45;
+  --color-funk: #9a6830;
   --color-world: #5d3e60;
-  --color-country: #7a6a40;
+  --color-country: #6a7040;
   --color-swing: #8a4a4a;
 }
 
@@ -44,8 +44,17 @@ html {
   -moz-osx-font-smoothing: grayscale;
 }
 
+/* Ambient background shapes — large colour washes that sit behind
+   all content via background-attachment: fixed. Sections with
+   transparent backgrounds let these show through; panel-dark areas
+   cover them entirely. Degrades gracefully (shows solid paper on iOS). */
 body {
-  background: var(--color-paper);
+  background-color: var(--color-paper);
+  background-image:
+    radial-gradient(ellipse 65vw 55vh at 4% 10%,  rgba(112, 158, 120, 0.13) 0%, transparent 70%),
+    radial-gradient(ellipse 55vw 65vh at 94% 80%,  rgba(80, 118, 158, 0.09) 0%, transparent 70%),
+    radial-gradient(ellipse 44vw 34vh at 64% 46%,  rgba(148, 128, 102, 0.06) 0%, transparent 65%);
+  background-attachment: fixed;
   color: var(--color-ink);
 }
 
@@ -127,4 +136,4 @@ a.editorial:hover {
   border-left-color: var(--color-dark-muted);
 }
 
-::selection { background: var(--color-ink); color: var(--color-paper); }
+::selection { background: var(--color-dark); color: var(--color-dark-text); }
