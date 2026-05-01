@@ -28,7 +28,7 @@ links.other?.forEach((l) => linkEntries.push(l));
   <article>
     {band.data.image && (
       <div class="aspect-[16/6] bg-[var(--color-paper-deep)] border-b border-[var(--color-rule)] overflow-hidden">
-        <img src={`${base}${band.data.image}`} alt={band.data.name} class="w-full h-full object-cover" />
+        <img src={`${base}${band.data.image}`} alt={band.data.name} class="w-full h-full object-cover" style={band.data.imagePosition ? `object-position: ${band.data.imagePosition}` : undefined} />
       </div>
     )}
 
@@ -93,7 +93,7 @@ links.other?.forEach((l) => linkEntries.push(l));
         {band.data.embeds?.youtube && band.data.embeds.youtube.length > 0 && (
           <section>
             <p class="eyebrow mb-3">Video</p>
-            <div class="grid sm:grid-cols-2 gap-4">
+            <div class="space-y-4">
               {band.data.embeds.youtube.map((v) => (
                 <div>
                   <div class="aspect-video bg-[var(--color-paper-deep)] border border-[var(--color-rule)]">

@@ -5,15 +5,11 @@ import BandCard from '../components/BandCard.astro';
 import { site } from '../lib/site';
 
 const bands = (await getCollection('bands')).sort((a, b) => {
-  // Active bands first
-  const aActive = a.data.active !== false ? 1 : 0;
-  const bActive = b.data.active !== false ? 1 : 0;
-  if (bActive !== aActive) return bActive - aActive;
-  // Bands with images before those without
+  // Bands with images first
   const aImg = a.data.image ? 1 : 0;
   const bImg = b.data.image ? 1 : 0;
   if (bImg !== aImg) return bImg - aImg;
-  // Most recent first
+  // Then most recently started
   return (b.data.yearStart ?? 0) - (a.data.yearStart ?? 0);
 });
 const featured = bands.filter((b) => b.data.featured).slice(0, 4);

@@ -46,7 +46,8 @@ const bands = defineCollection({
       youtube: z.array(z.object({ id: z.string(), title: z.string().optional() })).optional(),
       bandcamp: z.array(z.object({ html: z.string(), title: z.string().optional() })).optional(),
     }).optional(),
-    image: z.string().optional(), // path or URL
+    image: z.string().optional(),         // path or URL
+    imagePosition: z.string().optional(), // CSS object-position, e.g. "center 35%"
     featured: z.boolean().default(false),
     active: z.boolean().default(true), // false = band has been inactive for a while
     confirmed: z.boolean().default(true), // false = needs Julian's input
