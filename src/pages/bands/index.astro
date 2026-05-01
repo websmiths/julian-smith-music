@@ -4,12 +4,17 @@ import Base from '../../layouts/Base.astro';
 import BandCard from '../../components/BandCard.astro';
 import { site, type GenreKey } from '../../lib/site';
 
+const rolePriority: Record<string, number> = { core: 3, sub: 2, session: 1, video: 0 };
 const bands = (await getCollection('bands')).sort((a, b) => {
   // Bands with images first
   const aImg = a.data.image ? 1 : 0;
   const bImg = b.data.image ? 1 : 0;
   if (bImg !== aImg) return bImg - aImg;
-  // Then most recently started
+  // Core members before subs/session/video
+  const aRole = rolePriority[a.data.role] ?? 0;
+  const bRole = rolePriority[b.data.role] ?? 0;
+  if (bRole !== aRole) return bRole - aRole;
+  // Most recently started
   const ay = a.data.yearStart ?? 0;
   const by = b.data.yearStart ?? 0;
   if (ay !== by) return by - ay;
