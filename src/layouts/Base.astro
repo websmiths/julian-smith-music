@@ -108,7 +108,7 @@ const here = Astro.url.pathname.replace(base, '') || '/';
       (function () {
         function r(min, max) { return min + Math.random() * (max - min); }
         document.querySelectorAll('[data-blob]').forEach(function (el) {
-          var size = r(30, 70);          // diameter in vmin — keeps circles round at any aspect ratio
+          var size = r(40, 130);         // diameter in vmin — keeps circles round at any aspect ratio
           var x    = r(-size/4, 100 - size*0.75); // vw, allow partial off-screen
           var y    = r(-size/4, 100 - size*0.75); // vh
           el.style.width  = size + 'vmin';
