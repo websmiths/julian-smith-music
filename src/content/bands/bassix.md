@@ -32,6 +32,8 @@ embeds:
   youtube:
     - id: "cDdWVcIoADo"
       title: "Bassix — Way with Words"
+    - id: "9uQFUxHRf9Q"
+      title: "Bassix — live"
 quote:
   text: "Soulful Pop Folk that's had a Wild night on the Blues."
   attribution: "Band's own"
