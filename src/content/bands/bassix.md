@@ -18,6 +18,7 @@ discography:
     year: 2023
     type: live
     notes: "8 tracks recorded at South Lismore Duck Pond. All songs by Miss Jodie."
+    spotify: "https://open.spotify.com/album/3MvinCi0E3v9HWV96kPooO"
 links:
   spotify: "https://open.spotify.com/artist/5ohpCwdNeSukQrJDG8DMVQ"
   tidal: "https://tidal.com/artist/3662097"
