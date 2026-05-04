@@ -2,8 +2,8 @@
 name: "Fraught with Eskimo"
 role: core
 julianRole: "TBC"
-genres: ["rock"]
-accent: blues
+genres: ["funk", "jazz"]
+accent: funk
 era: "Early 1990s"
 yearStart: 1991
 yearEnd: 1994
