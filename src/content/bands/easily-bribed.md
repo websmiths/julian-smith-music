@@ -6,7 +6,7 @@ genres: ["folk"]
 accent: folk
 era: "Short-lived"
 region: "Northern Rivers NSW"
-blurb: "A short-lived project; a Facebook page is thought to exist. Details pending."
+blurb: "A short-lived project from the Northern Rivers. Details pending."
 image: "/images/easily-bribed.jpg"
 links:
   facebook: "https://www.facebook.com/easilyBribed/"
@@ -22,4 +22,4 @@ featured: false
 confirmed: false
 ---
 
-A short-lived project from the Northern Rivers run. A Facebook page is thought to exist; details pending Julian's notes.
+A short-lived project from the Northern Rivers run. Original kooky grooves. Check out the vids we made!
