@@ -1,6 +1,6 @@
 ---
 title: "Mothers’ Day at the Channon Tav!"
-date: 2026-10-05
+date: 2026-05-10
 time: "2pm"
 venue: "Channon Tavern"
 bands:
