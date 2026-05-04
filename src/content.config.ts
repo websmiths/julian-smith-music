@@ -44,7 +44,7 @@ const bands = defineCollection({
     }).optional(),
     embeds: z.object({
       youtube: z.array(z.object({ id: z.string(), title: z.string().optional(), params: z.string().optional() })).optional(),
-      facebook: z.array(z.object({ id: z.string(), title: z.string().optional(), type: z.enum(['video', 'reel']).default('video') })).optional(),
+      facebook: z.array(z.object({ id: z.string().optional(), url: z.string().optional(), title: z.string().optional(), type: z.enum(['video', 'reel']).default('video') })).optional(),
       bandcamp: z.array(z.object({ html: z.string(), title: z.string().optional() })).optional(),
     }).optional(),
     image: z.string().optional(),         // path or URL

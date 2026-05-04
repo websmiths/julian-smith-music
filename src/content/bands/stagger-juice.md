@@ -9,8 +9,14 @@ region: "Northern Rivers NSW"
 blurb: "Roots and blues outfit that plays anything from a stripped-back duo to a trio or full band with keys and horns."
 image: "/images/stagger-juice-2.jpg"
 links:
-  youtube: "https://www.youtube.com/playlist?list=PLKkN0m3NhhGkrc3kRbcktdf9wrPoeO_tZ"
+  facebook: "https://www.facebook.com/staggerJuice/"
+  other:
+    - label: "YouTube playlist"
+      url: "https://www.youtube.com/playlist?list=PLKkN0m3NhhGkrc3kRbcktdf9wrPoeO_tZ"
 embeds:
+  facebook:
+    - url: "https://www.facebook.com/100067775200052/videos/pcb.860872082848624/2497249093793995"
+      title: "Stagger Juice — live"
   youtube:
     - id: "vtKHTPz2CNM"
       title: "Jealous Kind"
