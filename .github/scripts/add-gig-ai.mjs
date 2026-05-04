@@ -9,14 +9,9 @@ import { writeFileSync, mkdirSync } from 'fs';
 import { join } from 'path';
 
 const description  = process.env.DESCRIPTION?.trim()       || '';
-const bandsRaw     = process.env.BANDS?.trim()             || '';
-const fbUrl        = process.env.FB_URL?.trim()            || '';
-const ticketUrl    = process.env.TICKET_URL?.trim()        || '';
-const notes        = process.env.NOTES?.trim()             || '';
 const apiKey       = process.env.ANTHROPIC_API_KEY?.trim() || '';
 
 if (!description) { console.error('ERROR: description is required.'); process.exit(1); }
-if (!bandsRaw)    { console.error('ERROR: bands is required.');       process.exit(1); }
 if (!apiKey)      { console.error('ERROR: ANTHROPIC_API_KEY secret is not set. Add it in: repo → Settings → Secrets and variables → Actions.'); process.exit(1); }
 
 // ── Call Claude API ───────────────────────────────────────────────────────────
@@ -28,6 +23,10 @@ const prompt = `Extract gig details from this event description and return ONLY 
 - "time": start time like "7:30pm" or "3pm" (string or null if not mentioned)
 - "venue": venue name (string, required)
 - "city": city and state/region like "Lismore, NSW" or "Brisbane, QLD" (string or null if not mentioned)
+- "bands": array of band/artist names (string[], required — infer from the description)
+- "ticket_url": ticket purchase URL if mentioned (string or null)
+- "facebook_event_url": Facebook event URL if mentioned (string or null)
+- "notes": any other relevant details not captured above (string or null)
 
 Description: "${description.replace(/"/g, '\\"')}"
 
@@ -46,7 +45,7 @@ try {
     },
     body: JSON.stringify({
       model: 'claude-haiku-4-5-20251001',
-      max_tokens: 256,
+      max_tokens: 512,
       messages: [{ role: 'user', content: prompt }],
     }),
   });
@@ -69,11 +68,12 @@ try {
 }
 
 // ── Validate ─────────────────────────────────────────────────────────────────
-const { title, date, time, venue, city } = extracted;
+const { title, date, time, venue, city, bands, ticket_url, facebook_event_url, notes } = extracted;
 const errors = [];
 if (!title) errors.push('title');
 if (!date)  errors.push('date');
 if (!venue) errors.push('venue');
+if (!bands?.length) errors.push('bands');
 if (errors.length) {
   console.error(`Claude couldn't extract: ${errors.join(', ')}. Try adding more detail to the description.`);
   process.exit(1);
@@ -84,8 +84,6 @@ if (!/^\d{4}-\d{2}-\d{2}$/.test(date)) {
 }
 
 // ── Build .md file ────────────────────────────────────────────────────────────
-const bands = bandsRaw.split(',').map(b => b.trim()).filter(Boolean);
-
 const slug = title
   .toLowerCase()
   .replace(/[^a-z0-9]+/g, '-')
@@ -98,14 +96,14 @@ const yaml = [
   '---',
   `title: ${JSON.stringify(title)}`,
   `date: ${date}`,
-  ...(time      ? [`time: ${JSON.stringify(time)}`]                : []),
+  ...(time             ? [`time: ${JSON.stringify(time)}`]                        : []),
   `venue: ${JSON.stringify(venue)}`,
-  ...(city      ? [`city: ${JSON.stringify(city)}`]               : []),
+  ...(city             ? [`city: ${JSON.stringify(city)}`]                        : []),
   'bands:',
   ...bands.map(b => `  - ${JSON.stringify(b)}`),
-  ...(ticketUrl ? [`ticket_url: ${JSON.stringify(ticketUrl)}`]    : []),
-  ...(fbUrl     ? [`facebook_event_url: ${JSON.stringify(fbUrl)}`]: []),
-  ...(notes     ? [`notes: ${JSON.stringify(notes)}`]             : []),
+  ...(ticket_url       ? [`ticket_url: ${JSON.stringify(ticket_url)}`]            : []),
+  ...(facebook_event_url ? [`facebook_event_url: ${JSON.stringify(facebook_event_url)}`] : []),
+  ...(notes            ? [`notes: ${JSON.stringify(notes)}`]                      : []),
   '---',
   '',
 ].join('\n');
