@@ -26,6 +26,7 @@ embeds:
   youtube:
     - id: "7f2cJM4IQVA"
       title: "Grey Goose — Davey Bob Ramsey does Leadbelly, North Lismore, 21 May 2015"
+image: "/images/davey-bobs-healers.jpg"
 featured: false
 confirmed: true
 ---
