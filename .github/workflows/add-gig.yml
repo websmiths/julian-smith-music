@@ -57,7 +57,9 @@ jobs:
 
       - name: Create gig file
         env:
-          FB_URL:     ${{ inputs.facebook_event_url }}
+          FB_URL:        ${{ inputs.facebook_event_url }}
+          FB_APP_ID:     ${{ secrets.FB_APP_ID }}
+          FB_APP_SECRET: ${{ secrets.FB_APP_SECRET }}
           TITLE:      ${{ inputs.title }}
           DATE:       ${{ inputs.date }}
           TIME:       ${{ inputs.time }}
