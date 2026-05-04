@@ -3,32 +3,32 @@ name: Add gig
 on:
   workflow_dispatch:
     inputs:
-      facebook_event_url:
-        description: 'Facebook event URL — paste this and the other fields fill automatically'
-        required: false
+      title:
+        description: 'Event title (e.g. "Stagger Juice at Lefty''s")'
+        required: true
+        type: string
+      date:
+        description: 'Date — e.g. 15 May 2026  or  2026-05-15  or  15/05/2026'
+        required: true
         type: string
       bands:
         description: 'Band(s) — comma-separated, e.g. "Stagger Juice" or "Stagger Juice, The Magnificence"'
         required: true
         type: string
-      title:
-        description: 'Event title (auto-filled from Facebook if URL provided)'
-        required: false
-        type: string
-      date:
-        description: 'Date as YYYY-MM-DD (auto-filled from Facebook if URL provided)'
-        required: false
+      venue:
+        description: 'Venue name'
+        required: true
         type: string
       time:
-        description: 'Start time, e.g. "7:30pm" (auto-filled from Facebook if URL provided)'
-        required: false
-        type: string
-      venue:
-        description: 'Venue name (auto-filled from Facebook if URL provided)'
+        description: 'Start time, e.g. 7:30pm (optional)'
         required: false
         type: string
       city:
-        description: 'City / region, e.g. "Lismore, NSW" (auto-filled from Facebook if URL provided)'
+        description: 'City / region, e.g. Brisbane QLD (optional)'
+        required: false
+        type: string
+      facebook_event_url:
+        description: 'Facebook event URL — stored as a link on the gig page (optional)'
         required: false
         type: string
       ticket_url:
@@ -57,15 +57,13 @@ jobs:
 
       - name: Create gig file
         env:
-          FB_URL:        ${{ inputs.facebook_event_url }}
-          FB_APP_ID:     ${{ secrets.FB_APP_ID }}
-          FB_APP_SECRET: ${{ secrets.FB_APP_SECRET }}
           TITLE:      ${{ inputs.title }}
           DATE:       ${{ inputs.date }}
-          TIME:       ${{ inputs.time }}
-          VENUE:      ${{ inputs.venue }}
-          CITY:       ${{ inputs.city }}
           BANDS:      ${{ inputs.bands }}
+          VENUE:      ${{ inputs.venue }}
+          TIME:       ${{ inputs.time }}
+          CITY:       ${{ inputs.city }}
+          FB_URL:     ${{ inputs.facebook_event_url }}
           TICKET_URL: ${{ inputs.ticket_url }}
           NOTES:      ${{ inputs.notes }}
         run: node .github/scripts/add-gig.mjs
