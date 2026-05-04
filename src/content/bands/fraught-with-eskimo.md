@@ -16,9 +16,9 @@ discography:
 image: "/images/fraught-1.jpg"
 photos:
   - src: "/images/fraught-1.jpg"
-    credit: "Dave"
+    caption: "Artwork: Dave"
   - src: "/images/fraught-cd.jpg"
-    credit: "Dave"
+    caption: "Artwork: Dave"
 featured: false
 confirmed: false
 ---
