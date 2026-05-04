@@ -67,6 +67,7 @@ embeds:
     - id: "1708731876159811"
       title: "The Magnificence — live (Facebook)"
 image: "/images/magnificence-8.jpg"
+imagePosition: "center 26%"
 featured: true
 active: false
 confirmed: true
