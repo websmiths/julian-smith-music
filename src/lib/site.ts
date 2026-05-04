@@ -9,6 +9,7 @@ export const site = {
   },
   nav: [
     { label: 'Bands', href: '/bands' },
+    { label: 'Gigs', href: '/gigs' },
     { label: 'Recordings', href: '/recordings' },
     { label: 'Live', href: '/live' },
     { label: 'For hire', href: '/for-hire' },

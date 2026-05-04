@@ -1,0 +1,134 @@
+---
+import { getCollection } from 'astro:content';
+import Base from '../layouts/Base.astro';
+
+const allGigs = await getCollection('gigs');
+
+// Compare dates as UTC date strings to avoid timezone day-off issues
+const todayStr = new Date().toISOString().split('T')[0];
+
+const upcoming = allGigs
+  .filter(g => !g.data.cancelled && g.data.date.toISOString().split('T')[0] >= todayStr)
+  .sort((a, b) => a.data.date.getTime() - b.data.date.getTime());
+
+const past = allGigs
+  .filter(g => g.data.cancelled || g.data.date.toISOString().split('T')[0] < todayStr)
+  .sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
+
+function formatDate(date: Date) {
+  return date.toLocaleDateString('en-AU', {
+    weekday: 'short',
+    day: 'numeric',
+    month: 'short',
+    year: 'numeric',
+    timeZone: 'UTC',
+  });
+}
+
+function formatMonth(date: Date) {
+  return date.toLocaleDateString('en-AU', { month: 'long', year: 'numeric', timeZone: 'UTC' });
+}
+---
+<Base title="Gigs" description="Upcoming and past gigs — Julian Smith, bass and flute, Northern Rivers.">
+  <section class="border-b border-[var(--color-rule)]">
+    <div class="mx-auto max-w-6xl px-6 py-14">
+      <p class="eyebrow mb-3">Gigs</p>
+      <h1 class="font-[var(--font-display)] font-bold text-5xl md:text-6xl leading-tight">Shows</h1>
+      <p class="mt-4 max-w-2xl text-[var(--color-ink-soft)] leading-relaxed">
+        Upcoming and recent gigs across all bands.
+      </p>
+    </div>
+  </section>
+
+  <!-- Upcoming -->
+  <section class="border-b border-[var(--color-rule)]">
+    <div class="mx-auto max-w-6xl px-6 py-12">
+      <p class="eyebrow mb-8">Upcoming</p>
+      {upcoming.length === 0 ? (
+        <p class="text-[var(--color-muted)] font-[var(--font-sans)] text-sm italic">No upcoming gigs listed yet — check back soon.</p>
+      ) : (
+        <div class="divide-y divide-[var(--color-rule-soft)]">
+          {upcoming.map(gig => (
+            <article class="py-6 grid sm:grid-cols-[9rem_1fr] gap-x-8 gap-y-2">
+              <div class="font-[var(--font-sans)] text-sm pt-0.5">
+                <time datetime={gig.data.date.toISOString().split('T')[0]} class="font-semibold text-[var(--color-ink)]">
+                  {formatDate(gig.data.date)}
+                </time>
+                {gig.data.time && (
+                  <p class="text-[var(--color-muted)] mt-0.5">{gig.data.time}</p>
+                )}
+              </div>
+              <div>
+                <p class="font-[var(--font-display)] text-lg font-semibold leading-snug">{gig.data.venue}</p>
+                {gig.data.city && (
+                  <p class="text-sm text-[var(--color-ink-soft)] font-[var(--font-sans)] mt-0.5">{gig.data.city}</p>
+                )}
+                <p class="text-sm text-[var(--color-ink-soft)] font-[var(--font-sans)] mt-1">
+                  {gig.data.bands.join(', ')}
+                </p>
+                {gig.data.notes && (
+                  <p class="text-sm text-[var(--color-muted)] font-[var(--font-sans)] mt-1 italic">{gig.data.notes}</p>
+                )}
+                <div class="flex flex-wrap gap-4 mt-2">
+                  {gig.data.facebook_event_url && (
+                    <a href={gig.data.facebook_event_url} target="_blank" rel="noopener"
+                      class="text-xs font-[var(--font-sans)] editorial">
+                      Facebook event ↗
+                    </a>
+                  )}
+                  {gig.data.ticket_url && (
+                    <a href={gig.data.ticket_url} target="_blank" rel="noopener"
+                      class="text-xs font-[var(--font-sans)] editorial">
+                      Tickets ↗
+                    </a>
+                  )}
+                </div>
+              </div>
+            </article>
+          ))}
+        </div>
+      )}
+    </div>
+  </section>
+
+  <!-- Past -->
+  {past.length > 0 && (
+    <section>
+      <div class="mx-auto max-w-6xl px-6 py-12">
+        <p class="eyebrow mb-8">Past</p>
+        <div class="divide-y divide-[var(--color-rule-soft)]">
+          {past.map(gig => (
+            <article class="py-4 grid sm:grid-cols-[9rem_1fr] gap-x-8 gap-y-1 text-[var(--color-ink-soft)]">
+              <div class="font-[var(--font-sans)] text-sm pt-0.5">
+                <time datetime={gig.data.date.toISOString().split('T')[0]} class="text-[var(--color-ink-soft)]">
+                  {formatDate(gig.data.date)}
+                </time>
+                {gig.data.time && (
+                  <p class="text-[var(--color-muted)] mt-0.5">{gig.data.time}</p>
+                )}
+                {gig.data.cancelled && (
+                  <p class="text-xs text-red-500 font-semibold mt-0.5 uppercase tracking-wide">Cancelled</p>
+                )}
+              </div>
+              <div>
+                <p class="font-[var(--font-display)] font-medium leading-snug">{gig.data.venue}</p>
+                {gig.data.city && (
+                  <p class="text-sm font-[var(--font-sans)] mt-0.5 text-[var(--color-muted)]">{gig.data.city}</p>
+                )}
+                <p class="text-sm font-[var(--font-sans)] mt-0.5 text-[var(--color-muted)]">
+                  {gig.data.bands.join(', ')}
+                </p>
+                {gig.data.facebook_event_url && (
+                  <a href={gig.data.facebook_event_url} target="_blank" rel="noopener"
+                    class="text-xs font-[var(--font-sans)] editorial mt-1 inline-block">
+                    Facebook event ↗
+                  </a>
+                )}
+              </div>
+            </article>
+          ))}
+        </div>
+      </div>
+    </section>
+  )}
+</Base>

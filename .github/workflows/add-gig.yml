@@ -1,0 +1,78 @@
+name: Add gig
+
+on:
+  workflow_dispatch:
+    inputs:
+      facebook_event_url:
+        description: 'Facebook event URL — paste this and the other fields fill automatically'
+        required: false
+        type: string
+      bands:
+        description: 'Band(s) — comma-separated, e.g. "Stagger Juice" or "Stagger Juice, The Magnificence"'
+        required: true
+        type: string
+      title:
+        description: 'Event title (auto-filled from Facebook if URL provided)'
+        required: false
+        type: string
+      date:
+        description: 'Date as YYYY-MM-DD (auto-filled from Facebook if URL provided)'
+        required: false
+        type: string
+      time:
+        description: 'Start time, e.g. "7:30pm" (auto-filled from Facebook if URL provided)'
+        required: false
+        type: string
+      venue:
+        description: 'Venue name (auto-filled from Facebook if URL provided)'
+        required: false
+        type: string
+      city:
+        description: 'City / region, e.g. "Lismore, NSW" (auto-filled from Facebook if URL provided)'
+        required: false
+        type: string
+      ticket_url:
+        description: 'Ticket link (optional)'
+        required: false
+        type: string
+      notes:
+        description: 'Extra notes, e.g. "With support from…" (optional)'
+        required: false
+        type: string
+
+jobs:
+  add-gig:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Create gig file
+        env:
+          FB_URL:     ${{ inputs.facebook_event_url }}
+          TITLE:      ${{ inputs.title }}
+          DATE:       ${{ inputs.date }}
+          TIME:       ${{ inputs.time }}
+          VENUE:      ${{ inputs.venue }}
+          CITY:       ${{ inputs.city }}
+          BANDS:      ${{ inputs.bands }}
+          TICKET_URL: ${{ inputs.ticket_url }}
+          NOTES:      ${{ inputs.notes }}
+        run: node .github/scripts/add-gig.mjs
+
+      - name: Commit and push
+        run: |
+          git config user.name  "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add src/content/gigs/
+          git diff --staged --quiet && echo "No changes to commit" && exit 0
+          git commit -m "Add gig: $(cat /tmp/gig-title.txt)"
+          git push

@@ -4,6 +4,12 @@ import Base from '../layouts/Base.astro';
 import BandCard from '../components/BandCard.astro';
 import { site } from '../lib/site';
 
+const allGigs = await getCollection('gigs');
+const todayStr = new Date().toISOString().split('T')[0];
+const nextGig = allGigs
+  .filter(g => !g.data.cancelled && g.data.date.toISOString().split('T')[0] >= todayStr)
+  .sort((a, b) => a.data.date.getTime() - b.data.date.getTime())[0] ?? null;
+
 const rolePriority: Record<string, number> = { core: 3, sub: 2, session: 1, video: 0 };
 const bands = (await getCollection('bands')).sort((a, b) => {
   // Bands with images first
@@ -25,6 +31,7 @@ const sidebarLinks: { href: string; label: string }[] = [
   { href: '/bands?role=sub', label: 'Sub / stand-in' },
   { href: '/bands?role=session', label: 'Studio session' },
   { href: '/bands', label: 'All bands' },
+  { href: '/gigs', label: 'Gigs' },
   { href: '/recordings', label: 'Recordings' },
   { href: '/live', label: 'Festivals & venues' },
   { href: '/for-hire', label: 'For hire' },
@@ -135,7 +142,28 @@ const sidebarLinks: { href: string; label: string }[] = [
         </figure>
       </section>
 
-      <!-- 3. Featured bands grid -->
+      <!-- 3. Next gig (only shown when there is one) -->
+      {nextGig && (
+        <section class="px-1">
+          <div class="border border-[var(--color-rule)] px-5 py-4 flex flex-wrap items-baseline justify-between gap-x-6 gap-y-2">
+            <div>
+              <p class="eyebrow mb-1">Next gig</p>
+              <p class="font-[var(--font-display)] text-lg font-semibold leading-snug">
+                {nextGig.data.venue}
+                {nextGig.data.city && <span class="font-normal text-[var(--color-ink-soft)]"> — {nextGig.data.city}</span>}
+              </p>
+              <p class="font-[var(--font-sans)] text-sm text-[var(--color-ink-soft)] mt-0.5">
+                {nextGig.data.date.toLocaleDateString('en-AU', { weekday: 'short', day: 'numeric', month: 'short', year: 'numeric', timeZone: 'UTC' })}
+                {nextGig.data.time && <> · {nextGig.data.time}</>}
+                {' · '}{nextGig.data.bands.join(', ')}
+              </p>
+            </div>
+            <a href={`${base}/gigs`} class="font-[var(--font-sans)] text-sm editorial shrink-0">All gigs →</a>
+          </div>
+        </section>
+      )}
+
+      <!-- 4. Featured bands grid -->
       <section class="px-1">
         <div class="flex items-end justify-between mb-5 border-b border-[var(--color-rule)] pb-3">
           <h2 class="font-[var(--font-display)] text-2xl font-bold">Featured bands</h2>

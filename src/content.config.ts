@@ -55,4 +55,20 @@ const bands = defineCollection({
   }),
 });
 
-export const collections = { bands };
+const gigs = defineCollection({
+  loader: glob({ pattern: '**/*.md', base: './src/content/gigs' }),
+  schema: z.object({
+    title: z.string(),
+    date: z.coerce.date(),
+    time: z.string().optional(),
+    venue: z.string(),
+    city: z.string().optional(),
+    bands: z.array(z.string()),
+    cancelled: z.boolean().default(false),
+    ticket_url: z.string().url().optional(),
+    facebook_event_url: z.string().url().optional(),
+    notes: z.string().optional(),
+  }),
+});
+
+export const collections = { bands, gigs };
