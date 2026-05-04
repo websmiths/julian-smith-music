@@ -20,23 +20,27 @@ discography:
     type: live
     notes: "Recorded 2 Feb & 25 May 2018. Album art by Julian."
     bandcamp: "https://themagnificence.bandcamp.com/album/live-at-nimbin-bush-theatre"
+    tidal: "https://tidal.com/album/271188055"
     spotify: "https://open.spotify.com/album/0h78VkZ5oSiI9xdBOiNzN2"
   - title: "A Christmas Promise"
     year: 2018
     type: single
     bandcamp: "https://themagnificence.bandcamp.com/track/a-christmas-promise"
+    tidal: "https://tidal.com/album/101226078"
     spotify: "https://open.spotify.com/album/22XrvTWECizELGcagN0ObE"
   - title: "Midnight Lamb Chops"
     year: 2019
     type: ep
     notes: "5 tracks, recorded at Northern Rivers Conservatorium, Lismore."
     bandcamp: "https://themagnificence.bandcamp.com/album/midnight-lamb-chops"
+    tidal: "https://tidal.com/album/115342186"
     spotify: "https://open.spotify.com/album/5jm1pWB6U1tMikOWGnJQhG"
   - title: "3am Fried Chicken"
     year: 2023
     type: album
     notes: "10 originals, recorded at The Barn Studio, Plainland QLD."
     bandcamp: "https://themagnificence.bandcamp.com/album/3am-fried-chicken"
+    tidal: "https://tidal.com/album/310384378"
     spotify: "https://open.spotify.com/album/5GmeGrIhxMG0cZrVxopqfa"
 festivals:
   - "Black Mountain Unplugged (twice)"
