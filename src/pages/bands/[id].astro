@@ -90,6 +90,24 @@ links.other?.forEach((l) => linkEntries.push(l));
           </blockquote>
         )}
 
+        {band.data.photos && band.data.photos.length > 0 && (
+          <section>
+            <p class="eyebrow mb-3">Photos</p>
+            <div class:list={["grid gap-4", band.data.photos.length === 1 ? "grid-cols-1" : "grid-cols-2"]}>
+              {band.data.photos.map((photo) => (
+                <figure>
+                  <img src={`${base}${photo.src}`} alt={photo.caption || band.data.name} class="w-full object-cover" />
+                  {(photo.caption || photo.credit) && (
+                    <figcaption class="mt-1 text-xs text-[var(--color-muted)] font-[var(--font-sans)]">
+                      {photo.caption}{photo.caption && photo.credit ? ' · ' : ''}{photo.credit && `Photo: ${photo.credit}`}
+                    </figcaption>
+                  )}
+                </figure>
+              ))}
+            </div>
+          </section>
+        )}
+
         {(band.data.embeds?.youtube?.length || band.data.embeds?.facebook?.length) && (
           <section>
             <p class="eyebrow mb-3">Video</p>

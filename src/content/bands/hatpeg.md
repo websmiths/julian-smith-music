@@ -15,6 +15,8 @@ discography:
     type: album
     notes: "Approximate year."
 image: "/images/hatpeg.jpg"
+photos:
+  - src: "/images/hatpeg.jpg"
 featured: false
 confirmed: false
 ---

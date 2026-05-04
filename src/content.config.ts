@@ -49,6 +49,11 @@ const bands = defineCollection({
     }).optional(),
     image: z.string().optional(),         // path or URL
     imagePosition: z.string().optional(), // CSS object-position, e.g. "center 35%"
+    photos: z.array(z.object({
+      src: z.string(),
+      caption: z.string().optional(),
+      credit: z.string().optional(),
+    })).optional(),
     featured: z.boolean().default(false),
     active: z.boolean().default(true), // false = band has been inactive for a while
     confirmed: z.boolean().default(true), // false = needs Julian's input
