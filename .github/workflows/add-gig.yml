@@ -77,7 +77,3 @@ jobs:
           git commit -m "Add gig: $(cat /tmp/gig-title.txt)"
           git push
 
-      - name: Trigger deploy
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: gh workflow run deploy.yml --ref main
