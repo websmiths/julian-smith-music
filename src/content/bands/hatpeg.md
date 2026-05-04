@@ -14,6 +14,7 @@ discography:
     year: 1996
     type: album
     notes: "Approximate year."
+image: "/images/hatpeg.jpg"
 featured: false
 confirmed: false
 ---

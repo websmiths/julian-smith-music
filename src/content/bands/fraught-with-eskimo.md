@@ -13,8 +13,11 @@ discography:
   - title: "Bothered By a Sound From the Aquarium"
     year: 1995
     type: album
+image: "/images/fraught-1.jpg"
 featured: false
 confirmed: false
 ---
 
 Another Bathurst-era band from Julian's Charles Sturt University years. Pre-internet, no surviving public footprint — details forthcoming from Julian.
+
+*Photos: Dave.*
