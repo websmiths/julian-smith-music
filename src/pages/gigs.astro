@@ -59,11 +59,11 @@ function formatMonth(date: Date) {
                 )}
               </div>
               <div>
-                <p class="font-[var(--font-display)] text-lg font-semibold leading-snug">{gig.data.venue}</p>
-                {gig.data.city && (
-                  <p class="text-sm text-[var(--color-ink-soft)] font-[var(--font-sans)] mt-0.5">{gig.data.city}</p>
-                )}
-                <p class="text-sm text-[var(--color-ink-soft)] font-[var(--font-sans)] mt-1">
+                <p class="font-[var(--font-display)] text-lg font-semibold leading-snug">{gig.data.title}</p>
+                <p class="text-sm text-[var(--color-ink-soft)] font-[var(--font-sans)] mt-0.5">
+                  {gig.data.venue}{gig.data.city && ` · ${gig.data.city}`}
+                </p>
+                <p class="text-sm text-[var(--color-ink-soft)] font-[var(--font-sans)] mt-0.5">
                   {gig.data.bands.join(', ')}
                 </p>
                 {gig.data.notes && (
@@ -111,10 +111,10 @@ function formatMonth(date: Date) {
                 )}
               </div>
               <div>
-                <p class="font-[var(--font-display)] font-medium leading-snug">{gig.data.venue}</p>
-                {gig.data.city && (
-                  <p class="text-sm font-[var(--font-sans)] mt-0.5 text-[var(--color-muted)]">{gig.data.city}</p>
-                )}
+                <p class="font-[var(--font-display)] font-medium leading-snug">{gig.data.title}</p>
+                <p class="text-sm font-[var(--font-sans)] mt-0.5 text-[var(--color-muted)]">
+                  {gig.data.venue}{gig.data.city && ` · ${gig.data.city}`}
+                </p>
                 <p class="text-sm font-[var(--font-sans)] mt-0.5 text-[var(--color-muted)]">
                   {gig.data.bands.join(', ')}
                 </p>
