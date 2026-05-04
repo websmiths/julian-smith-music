@@ -13,6 +13,10 @@ members:
 discography:
   - title: "(One album — title TBC)"
     notes: "One studio album; title and year pending."
+links:
+  other:
+    - label: "triple j Unearthed"
+      url: "https://www.abc.net.au/triplejunearthed/artist/red-belly-black"
 featured: false
 confirmed: false
 ---
