@@ -93,9 +93,6 @@ const here = Astro.url.pathname.replace(base, '') || '/';
             ) : (
               <li class="text-[var(--color-dark-muted)] italic text-xs">Facebook link to be added</li>
             )}
-            {site.email && (
-              <li><a href={`mailto:${site.email}`} class="text-[var(--color-dark-text)] hover:underline">{site.email}</a></li>
-            )}
           </ul>
         </div>
       </div>
