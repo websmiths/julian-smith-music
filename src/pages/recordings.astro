@@ -13,6 +13,7 @@ type Entry = {
   notes?: string;
   bandcamp?: string;
   spotify?: string;
+  tidal?: string;
 };
 
 const all: Entry[] = bands.flatMap((b) =>
@@ -26,7 +27,8 @@ const all: Entry[] = bands.flatMap((b) =>
       type: d.type,
       notes: d.notes,
       bandcamp: d.bandcamp,
-      spotify: d.spotify,
+      spotify: d.spotify ?? b.data.links?.spotify,
+      tidal: d.tidal ?? b.data.links?.tidal,
     }))
 );
 
@@ -50,7 +52,7 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
       <p class="eyebrow mb-3">Recordings</p>
       <h1 class="font-[var(--font-display)] font-bold text-5xl md:text-6xl leading-tight">Discography</h1>
       <p class="mt-4 max-w-2xl text-lg text-[var(--color-ink-soft)] leading-relaxed">
-        Releases I've played on, ordered by year. {sorted.length} so far. Bandcamp links where available; many older live and self-released tapes are in personal collections only.
+        Releases I've played on, ordered by year. Bandcamp links where available; many older live and self-released tapes are in personal collections only.
       </p>
     </div>
   </section>
@@ -67,10 +69,13 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
             {grouped[year].map((e) => (
               <li class="grid md:grid-cols-12 gap-4 py-3.5 items-baseline">
                 <div class="md:col-span-5">
-                  <p class="font-[var(--font-display)] text-xl font-semibold leading-tight text-[var(--color-ink)]">
-                    {e.bandcamp ? <a href={e.bandcamp} class="editorial">{e.title}</a> : e.title}
-                  </p>
-                  {e.type && <p class="eyebrow mt-1">{e.type}</p>}
+                  <p class="font-[var(--font-display)] text-xl font-semibold leading-tight text-[var(--color-ink)]">{e.title}</p>
+                  <div class="flex flex-wrap gap-2 mt-1.5 items-center">
+                    {e.type && <span class="eyebrow">{e.type}</span>}
+                    {e.bandcamp && <a href={e.bandcamp} target="_blank" rel="noopener" class="text-[10px] font-[var(--font-sans)] uppercase tracking-widest border border-[var(--color-rule)] px-1.5 py-0.5 hover:border-[var(--color-ink)] hover:text-[var(--color-ink)] text-[var(--color-muted)] transition-colors">Bandcamp</a>}
+                    {e.spotify && <a href={e.spotify} target="_blank" rel="noopener" class="text-[10px] font-[var(--font-sans)] uppercase tracking-widest border border-[var(--color-rule)] px-1.5 py-0.5 hover:border-[var(--color-ink)] hover:text-[var(--color-ink)] text-[var(--color-muted)] transition-colors">Spotify</a>}
+                    {e.tidal && <a href={e.tidal} target="_blank" rel="noopener" class="text-[10px] font-[var(--font-sans)] uppercase tracking-widest border border-[var(--color-rule)] px-1.5 py-0.5 hover:border-[var(--color-ink)] hover:text-[var(--color-ink)] text-[var(--color-muted)] transition-colors">Tidal</a>}
+                  </div>
                 </div>
                 <div class="md:col-span-4">
                   <a href={`${base}/bands/${e.bandId}`} class="text-[var(--color-ink-soft)] hover:text-[var(--color-ink)] font-[var(--font-sans)] text-sm">

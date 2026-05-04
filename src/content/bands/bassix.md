@@ -20,6 +20,7 @@ discography:
     notes: "8 tracks recorded at South Lismore Duck Pond. All songs by Miss Jodie."
 links:
   spotify: "https://open.spotify.com/artist/5ohpCwdNeSukQrJDG8DMVQ"
+  tidal: "https://tidal.com/artist/3662097"
   reverbnation: "https://www.reverbnation.com/bassixband"
   other:
     - label: "Funkafide page"

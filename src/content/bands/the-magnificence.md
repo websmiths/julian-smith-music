@@ -51,6 +51,7 @@ quote:
 links:
   bandcamp: "https://themagnificence.bandcamp.com/"
   spotify: "https://open.spotify.com/artist/1fqCc8BCp9qKs0Ky1SwgAo"
+  tidal: "https://tidal.com/artist/10748854"
   facebook: "https://www.facebook.com/themagnificenceneworleansjazz"
   other:
     - label: "Cam Smith Trumpet — band page"

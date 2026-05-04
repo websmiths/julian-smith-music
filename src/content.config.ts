@@ -23,6 +23,7 @@ const bands = defineCollection({
       notes: z.string().optional(),
       bandcamp: z.string().url().optional(),
       spotify: z.string().url().optional(),
+      tidal: z.string().url().optional(),
       julianOn: z.boolean().default(true), // false = band's record but Julian wasn't on it
     })).optional(),
     festivals: z.array(z.string()).optional(),
@@ -35,6 +36,7 @@ const bands = defineCollection({
       official: z.string().url().optional(),
       bandcamp: z.string().url().optional(),
       spotify: z.string().url().optional(),
+      tidal: z.string().url().optional(),
       facebook: z.string().url().optional(),
       instagram: z.string().url().optional(),
       youtube: z.string().url().optional(),
