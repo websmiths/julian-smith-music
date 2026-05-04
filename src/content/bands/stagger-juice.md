@@ -1,12 +1,12 @@
 ---
 name: "Stagger Juice"
 role: core
-julianRole: "Bass"
-genres: ["blues", "folk", "country"]
-accent: blues
+julianRole: "Bass, vocals"
+genres: ["funk", "blues", "world"]
+accent: funk
 era: "—"
 region: "Northern Rivers NSW"
-blurb: "Roots and blues outfit that plays anything from a stripped-back duo to a trio or full band with keys and horns."
+blurb: "New Orleans-flavoured funk and soul built around guitar, bass and vocals. Scales from duo to full ensemble with keys and horns."
 image: "/images/stagger-juice-2.jpg"
 links:
   facebook: "https://www.facebook.com/staggerJuice/"
@@ -28,4 +28,4 @@ featured: false
 confirmed: false
 ---
 
-Stagger Juice works at whatever scale the room needs — duo, trio, or full band with keys and horns. The Northern Rivers run of shows spans blues, roots and country territory.
+Stagger Juice play New Orleans-flavoured funk and soul, built around the guitar and vocals of Neil McCann and the bass and vocals of Julian Smith. Drummer Pete Wilkins rounds out the core lineup, though the band expands as the occasion calls for it — bringing in additional drummers, keys, and horns, scaling from a duo to a full ensemble.
