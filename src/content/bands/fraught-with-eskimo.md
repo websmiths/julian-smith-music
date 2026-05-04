@@ -13,9 +13,9 @@ discography:
   - title: "Bothered By a Sound From the Aquarium"
     year: 1995
     type: album
-image: "/images/fraught-1.jpg"
+image: "/images/fraught-poster-1.jpg"
 photos:
-  - src: "/images/fraught-1.jpg"
+  - src: "/images/fraught-poster-1.jpg"
     caption: "Artwork: Dave"
   - src: "/images/fraught-cd.jpg"
     caption: "Artwork: Dave"
