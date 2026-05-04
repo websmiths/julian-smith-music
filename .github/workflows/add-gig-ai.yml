@@ -1,0 +1,59 @@
+name: Add gig (AI)
+
+on:
+  workflow_dispatch:
+    inputs:
+      description:
+        description: 'Describe the gig — e.g. "Stagger Juice at the Workers Club, Lismore, Sunday 21 June at 3pm"'
+        required: true
+        type: string
+      bands:
+        description: 'Band(s) — comma-separated, e.g. "Stagger Juice"'
+        required: true
+        type: string
+      facebook_event_url:
+        description: 'Facebook event URL — stored as a link (optional)'
+        required: false
+        type: string
+      ticket_url:
+        description: 'Ticket link (optional)'
+        required: false
+        type: string
+      notes:
+        description: 'Extra notes (optional)'
+        required: false
+        type: string
+
+jobs:
+  add-gig:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+
+      - name: Setup Node
+        uses: actions/setup-node@v6
+        with:
+          node-version: '22'
+
+      - name: Create gig file
+        env:
+          DESCRIPTION:       ${{ inputs.description }}
+          BANDS:             ${{ inputs.bands }}
+          FB_URL:            ${{ inputs.facebook_event_url }}
+          TICKET_URL:        ${{ inputs.ticket_url }}
+          NOTES:             ${{ inputs.notes }}
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+        run: node .github/scripts/add-gig-ai.mjs
+
+      - name: Commit and push
+        run: |
+          git config user.name  "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add src/content/gigs/
+          git diff --staged --quiet && echo "No changes to commit" && exit 0
+          git commit -m "Add gig: $(cat /tmp/gig-title.txt)"
+          git push
