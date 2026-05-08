@@ -3,6 +3,8 @@
  *
  * Unified gig manager: add, edit, or delete a gig from a plain-English instruction.
  * Claude determines intent from the instruction and the list of existing gigs.
+ * After updating the site files, optionally syncs to Google Calendar if
+ * GOOGLE_CLIENT_ID / GOOGLE_CLIENT_SECRET / GOOGLE_REFRESH_TOKEN secrets are set.
  * Runs in GitHub Actions via the "Gig Assistant (AI)" workflow.
  */
 
@@ -120,6 +122,9 @@ if (action === 'none') {
   process.exit(1);
 }
 
+// For delete: read the file before removing it so we can grab calendar_uid
+let deletedCalendarUid = null;
+
 if (action === 'create') {
   const { filename, content } = result;
   if (!filename || !content) {
@@ -154,6 +159,9 @@ if (action === 'create') {
     console.error(`File not found: "${file}"`);
     process.exit(1);
   }
+  const existingContent = readFileSync(join(gigsDir, file), 'utf8');
+  const uidMatch = existingContent.match(/^calendar_uid:\s*["']?([^"'\n]+)["']?/m);
+  if (uidMatch) deletedCalendarUid = uidMatch[1].trim();
   unlinkSync(join(gigsDir, file));
   console.log(`\n✓ Deleted: src/content/gigs/${file}`);
 
@@ -163,3 +171,179 @@ if (action === 'create') {
 }
 
 writeFileSync('/tmp/gig-summary.txt', summary || `${action} gig`, 'utf8');
+
+// ── Google Calendar sync ──────────────────────────────────────────────────────
+const gclientId     = process.env.GOOGLE_CLIENT_ID?.trim();
+const gclientSecret = process.env.GOOGLE_CLIENT_SECRET?.trim();
+const grefreshToken = process.env.GOOGLE_REFRESH_TOKEN?.trim();
+const CALENDAR_ID   = '3ebsmths@gmail.com';
+
+if (!gclientId || !gclientSecret || !grefreshToken) {
+  console.log('\nGoogle Calendar secrets not set — skipping calendar sync.');
+  process.exit(0);
+}
+
+// Get OAuth access token
+const tokenRes = await fetch('https://oauth2.googleapis.com/token', {
+  method: 'POST',
+  headers: { 'content-type': 'application/json' },
+  body: JSON.stringify({
+    client_id: gclientId,
+    client_secret: gclientSecret,
+    refresh_token: grefreshToken,
+    grant_type: 'refresh_token',
+  }),
+});
+const tokenData = await tokenRes.json();
+const accessToken = tokenData.access_token;
+if (!accessToken) {
+  console.error('Failed to get Google access token:', JSON.stringify(tokenData));
+  process.exit(0); // non-fatal — site files are already written
+}
+
+// ── Helpers ───────────────────────────────────────────────────────────────────
+function parseFrontmatter(content) {
+  const fm = content.match(/^---\n([\s\S]*?)\n---/);
+  if (!fm) return {};
+  const raw = fm[1];
+  const get = (key) => {
+    const m = raw.match(new RegExp(`^${key}:\\s*(.+)`, 'm'));
+    return m ? m[1].replace(/^["']|["']$/g, '').trim() : null;
+  };
+  return {
+    title:        get('title'),
+    date:         get('date'),
+    time:         get('time'),
+    venue:        get('venue'),
+    city:         get('city'),
+    calendar_uid: get('calendar_uid'),
+  };
+}
+
+function parseTime12h(timeStr) {
+  if (!timeStr) return null;
+  const m = timeStr.match(/(\d+)(?::(\d+))?\s*(am|pm)/i);
+  if (!m) return null;
+  let h = parseInt(m[1]);
+  const min = parseInt(m[2] || '0');
+  const ampm = m[3].toLowerCase();
+  if (ampm === 'pm' && h !== 12) h += 12;
+  if (ampm === 'am' && h === 12) h = 0;
+  return { h, min };
+}
+
+function buildCalendarEvent(gig) {
+  const { title, date, time, venue, city } = gig;
+  const location = [venue, city].filter(Boolean).join(', ');
+  const description = '#site';
+
+  const parsed = parseTime12h(time);
+  if (parsed) {
+    const pad = n => String(n).padStart(2, '0');
+    const startH = parsed.h;
+    const endH   = Math.min(parsed.h + 3, 23);
+    const min    = pad(parsed.min);
+    return {
+      summary: title,
+      location,
+      description,
+      start: { dateTime: `${date}T${pad(startH)}:${min}:00`, timeZone: 'Australia/Sydney' },
+      end:   { dateTime: `${date}T${pad(endH)}:${min}:00`,   timeZone: 'Australia/Sydney' },
+    };
+  }
+
+  // All-day
+  const next = new Date(date + 'T00:00:00');
+  next.setDate(next.getDate() + 1);
+  return {
+    summary: title,
+    location,
+    description,
+    start: { date },
+    end:   { date: next.toISOString().split('T')[0] },
+  };
+}
+
+function calApiEventId(calendarUid) {
+  // iCal UIDs from Google are typically "{eventId}@google.com"
+  return calendarUid ? calendarUid.replace(/@google\.com$/, '') : null;
+}
+
+async function calRequest(method, path, body) {
+  const res = await fetch(`https://www.googleapis.com/calendar/v3${path}`, {
+    method,
+    headers: {
+      Authorization: `Bearer ${accessToken}`,
+      'content-type': 'application/json',
+    },
+    body: body ? JSON.stringify(body) : undefined,
+  });
+  const data = await res.json();
+  if (!res.ok) console.error(`  Calendar API ${method} ${path} error:`, JSON.stringify(data));
+  return { ok: res.ok, data };
+}
+
+// ── Sync based on action ──────────────────────────────────────────────────────
+if (action === 'create') {
+  const { filename, content } = result;
+  const gig = parseFrontmatter(content);
+  if (!gig.title || !gig.date) {
+    console.log('  Skipping calendar: missing title or date.');
+    process.exit(0);
+  }
+  const event = buildCalendarEvent(gig);
+  const { ok, data } = await calRequest('POST', `/calendars/${encodeURIComponent(CALENDAR_ID)}/events`, event);
+  if (ok && data.id) {
+    const calUid = `${data.id}@google.com`;
+    console.log(`  Calendar event created: ${data.id}`);
+    // Patch the gig file to include calendar_uid
+    const gigPath = join(gigsDir, filename);
+    let fileContent = readFileSync(gigPath, 'utf8');
+    if (!fileContent.match(/^calendar_uid:/m)) {
+      fileContent = fileContent.replace(/^(---\n[\s\S]*?)(---)/m, `$1calendar_uid: "${calUid}"\n$2`);
+      writeFileSync(gigPath, fileContent, 'utf8');
+      console.log(`  Updated ${filename} with calendar_uid: ${calUid}`);
+    }
+  }
+
+} else if (action === 'edit') {
+  const { file, content } = result;
+  const gig = parseFrontmatter(content);
+  if (!gig.title || !gig.date) {
+    console.log('  Skipping calendar: missing title or date.');
+    process.exit(0);
+  }
+  const event = buildCalendarEvent(gig);
+  const eventId = calApiEventId(gig.calendar_uid);
+
+  if (eventId) {
+    // Update existing event
+    const { ok } = await calRequest('PATCH', `/calendars/${encodeURIComponent(CALENDAR_ID)}/events/${eventId}`, event);
+    if (ok) console.log(`  Calendar event updated: ${eventId}`);
+  } else {
+    // No UID stored — create a new event and save the UID
+    const { ok, data } = await calRequest('POST', `/calendars/${encodeURIComponent(CALENDAR_ID)}/events`, event);
+    if (ok && data.id) {
+      const calUid = `${data.id}@google.com`;
+      console.log(`  Calendar event created: ${data.id}`);
+      const gigPath = join(gigsDir, file);
+      let fileContent = readFileSync(gigPath, 'utf8');
+      if (!fileContent.match(/^calendar_uid:/m)) {
+        fileContent = fileContent.replace(/^(---\n[\s\S]*?)(---)/m, `$1calendar_uid: "${calUid}"\n$2`);
+        writeFileSync(gigPath, fileContent, 'utf8');
+        console.log(`  Updated ${file} with calendar_uid: ${calUid}`);
+      }
+    }
+  }
+
+} else if (action === 'delete') {
+  const eventId = calApiEventId(deletedCalendarUid);
+  if (eventId) {
+    const { ok } = await calRequest('DELETE', `/calendars/${encodeURIComponent(CALENDAR_ID)}/events/${eventId}`);
+    if (ok) console.log(`  Calendar event deleted: ${eventId}`);
+  } else {
+    console.log('  No calendar_uid in deleted file — skipping calendar delete.');
+  }
+}
+
+console.log('\n✓ Calendar sync complete.');
