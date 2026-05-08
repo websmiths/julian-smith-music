@@ -119,6 +119,7 @@ for (const ev of events) {
   const desc = (ev.description || '').replace(/\\n/g, '\n');
   if (!desc.includes(SITE_TAG)) continue;
 
+  console.log(`  [DEBUG] ${ev.summary} | dtstart raw: ${JSON.stringify(ev.dtstart)}`);
   const parsed = parseIcalDate(ev.dtstart);
   if (!parsed) continue;
   const { date, time, allDay } = parsed;
