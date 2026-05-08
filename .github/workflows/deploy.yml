@@ -5,7 +5,7 @@ on:
     branches: [main]
   workflow_dispatch:
   workflow_run:
-    workflows: ["Add gig", "Add gig (AI)", "Edit gig (AI)"]
+    workflows: ["Add gig", "Add gig (AI)", "Edit gig (AI)", "Gig Assistant (AI)"]
     types: [completed]
 
 permissions:
