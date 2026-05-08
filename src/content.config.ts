@@ -75,6 +75,7 @@ const gigs = defineCollection({
     ticket_url: z.string().url().optional(),
     facebook_event_url: z.string().url().optional(),
     notes: z.string().optional(),
+    calendar_uid: z.string().optional(),
   }),
 });
 
