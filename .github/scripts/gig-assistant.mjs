@@ -173,6 +173,12 @@ if (action === 'create') {
 writeFileSync('/tmp/gig-summary.txt', summary || `${action} gig`, 'utf8');
 
 // ── Google Calendar sync ──────────────────────────────────────────────────────
+const skipCalendar = /\b(no(t| calendar)|skip calendar|site only|don'?t add to calendar|do not add to calendar)\b/i.test(instruction);
+if (skipCalendar) {
+  console.log('\nSkipping calendar sync (instruction said so).');
+  process.exit(0);
+}
+
 const gclientId     = process.env.GOOGLE_CLIENT_ID?.trim();
 const gclientSecret = process.env.GOOGLE_CLIENT_SECRET?.trim();
 const grefreshToken = process.env.GOOGLE_REFRESH_TOKEN?.trim();
