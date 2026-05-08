@@ -54,12 +54,14 @@ function parseIcalDate(dtstart) {
   // All-day: VALUE=DATE:YYYYMMDD or just YYYYMMDD
   const allDay = dtstart.match(/(?:VALUE=DATE:)?(\d{4})(\d{2})(\d{2})$/);
   if (allDay) return { date: `${allDay[1]}-${allDay[2]}-${allDay[3]}`, time: null, allDay: true };
-  // Timed UTC: YYYYMMDDTHHmmssZ
-  const timed = dtstart.match(/(\d{4})(\d{2})(\d{2})T(\d{2})(\d{2})(\d{2})Z?/);
+  // Timed: YYYYMMDDTHHmmss[Z] — trailing Z = UTC, no Z = local (treat as Sydney)
+  const timed = dtstart.match(/(\d{4})(\d{2})(\d{2})T(\d{2})(\d{2})(\d{2})(Z)?/);
   if (!timed) return null;
-  const utc = new Date(`${timed[1]}-${timed[2]}-${timed[3]}T${timed[4]}:${timed[5]}:${timed[6]}Z`);
-  // Convert to Sydney time (simple offset; handles AEST +10 / AEDT +11 approximately)
-  const sydney = new Date(utc.toLocaleString('en-AU', { timeZone: 'Australia/Sydney' }));
+  const isUtc = timed[7] === 'Z';
+  const iso = `${timed[1]}-${timed[2]}-${timed[3]}T${timed[4]}:${timed[5]}:${timed[6]}${isUtc ? 'Z' : ''}`;
+  const base = new Date(iso);
+  // Convert to Sydney time
+  const sydney = new Date(base.toLocaleString('en-AU', { timeZone: 'Australia/Sydney' }));
   const pad = (n) => String(n).padStart(2, '0');
   const date = `${sydney.getFullYear()}-${pad(sydney.getMonth() + 1)}-${pad(sydney.getDate())}`;
   const h = sydney.getHours();
