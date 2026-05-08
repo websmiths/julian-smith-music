@@ -70,6 +70,10 @@ Determine what the instruction is asking and return ONLY a JSON object:
   "summary": "<explain what you couldn't determine>"
 }
 
+For create/edit/delete, also include:
+  "skip_calendar": <boolean> — true if the instruction asks NOT to update Google Calendar
+  (e.g. "site only", "don't sync calendar", "no calendar update", "skip calendar"). Default false.
+
 Rules for "create":
 - filename format: YYYY-MM-DD-slug.md (slug = lowercased title, hyphens, max 60 chars)
 - Required frontmatter fields: title, date (YYYY-MM-DD), venue, bands (array)
@@ -173,11 +177,7 @@ if (action === 'create') {
 writeFileSync('/tmp/gig-summary.txt', summary || `${action} gig`, 'utf8');
 
 // ── Google Calendar sync ──────────────────────────────────────────────────────
-// Skip calendar sync if instruction mentions a negation/skip word near "calendar" or "sync",
-// or uses the explicit "site only" shorthand.
-const skipCalendar = /\b(no|not|don'?t|do not|skip|without|never)\b[^.!?]{0,40}\b(calendar|sync)\b/i.test(instruction)
-  || /\bsite only\b/i.test(instruction);
-if (skipCalendar) {
+if (result.skip_calendar) {
   console.log('\nSkipping calendar sync (instruction said so).');
   process.exit(0);
 }
