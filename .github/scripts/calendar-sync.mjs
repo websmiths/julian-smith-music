@@ -49,6 +49,23 @@ function parseIcal(text) {
 }
 
 // ── Date helpers ──────────────────────────────────────────────────────────────
+function partsInTimezone(date, timeZone) {
+  const parts = new Intl.DateTimeFormat('en-US', {
+    timeZone,
+    year: 'numeric', month: '2-digit', day: '2-digit',
+    hour: '2-digit', minute: '2-digit', second: '2-digit',
+    hour12: false,
+  }).formatToParts(date);
+  const g = (t) => parts.find(p => p.type === t)?.value;
+  return {
+    year:  parseInt(g('year')),
+    month: parseInt(g('month')),
+    day:   parseInt(g('day')),
+    hour:  parseInt(g('hour')) % 24, // sometimes returns 24 for midnight
+    minute: parseInt(g('minute')),
+  };
+}
+
 function parseIcalDate(dtstart) {
   if (!dtstart) return null;
   // All-day: VALUE=DATE:YYYYMMDD or just YYYYMMDD
@@ -60,13 +77,13 @@ function parseIcalDate(dtstart) {
   const isUtc = timed[7] === 'Z';
   const iso = `${timed[1]}-${timed[2]}-${timed[3]}T${timed[4]}:${timed[5]}:${timed[6]}${isUtc ? 'Z' : ''}`;
   const base = new Date(iso);
-  // Convert to Sydney time
-  const sydney = new Date(base.toLocaleString('en-AU', { timeZone: 'Australia/Sydney' }));
+  // Convert to Sydney time using formatToParts (avoids locale string round-trip bug)
+  const { year, month, day, hour, minute } = partsInTimezone(base, 'Australia/Sydney');
   const pad = (n) => String(n).padStart(2, '0');
-  const date = `${sydney.getFullYear()}-${pad(sydney.getMonth() + 1)}-${pad(sydney.getDate())}`;
-  const h = sydney.getHours();
-  const m = sydney.getMinutes();
-  const time = m === 0 ? `${h % 12 || 12}${h < 12 ? 'am' : 'pm'}` : `${h % 12 || 12}:${pad(m)}${h < 12 ? 'am' : 'pm'}`;
+  const date = `${year}-${pad(month)}-${pad(day)}`;
+  const time = minute === 0
+    ? `${hour % 12 || 12}${hour < 12 ? 'am' : 'pm'}`
+    : `${hour % 12 || 12}:${pad(minute)}${hour < 12 ? 'am' : 'pm'}`;
   return { date, time, allDay: false };
 }
 
@@ -119,7 +136,6 @@ for (const ev of events) {
   const desc = (ev.description || '').replace(/\\n/g, '\n');
   if (!desc.includes(SITE_TAG)) continue;
 
-  console.log(`  [DEBUG] ${ev.summary} | dtstart raw: ${JSON.stringify(ev.dtstart)}`);
   const parsed = parseIcalDate(ev.dtstart);
   if (!parsed) continue;
   const { date, time, allDay } = parsed;
