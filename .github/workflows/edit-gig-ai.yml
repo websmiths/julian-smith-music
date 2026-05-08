@@ -1,0 +1,39 @@
+name: Edit gig (AI)
+
+on:
+  workflow_dispatch:
+    inputs:
+      instruction:
+        description: 'What to change — e.g. "Add Facebook event https://fb.me/... to the May 17 gig" or "Delete the Channon Tav gig"'
+        required: true
+        type: string
+
+jobs:
+  edit-gig:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+
+      - name: Setup Node
+        uses: actions/setup-node@v6
+        with:
+          node-version: '22'
+
+      - name: Edit gig file
+        env:
+          INSTRUCTION:       ${{ inputs.instruction }}
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+        run: node .github/scripts/edit-gig-ai.mjs
+
+      - name: Commit and push
+        run: |
+          git config user.name  "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add src/content/gigs/
+          git diff --staged --quiet && echo "No changes to commit" && exit 0
+          git commit -m "$(cat /tmp/gig-edit-summary.txt)"
+          git push
