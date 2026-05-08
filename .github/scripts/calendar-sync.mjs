@@ -71,7 +71,7 @@ function parseIcalDate(dtstart) {
 // ── Rolling window ────────────────────────────────────────────────────────────
 const now   = new Date();
 const past  = new Date(now); past.setDate(past.getDate() - 7);
-const future = new Date(now); future.setMonth(future.getMonth() + 6);
+const future = new Date(now); future.setMonth(future.getMonth() + 12);
 const pastStr   = past.toISOString().split('T')[0];
 const futureStr = future.toISOString().split('T')[0];
 
