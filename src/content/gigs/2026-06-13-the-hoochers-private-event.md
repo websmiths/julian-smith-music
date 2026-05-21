@@ -1,5 +1,5 @@
 ---
-title: "The Hoochers at a private event"
+title: "The Hoochers"
 date: 2026-06-13
 venue: "Private Event"
 bands:
