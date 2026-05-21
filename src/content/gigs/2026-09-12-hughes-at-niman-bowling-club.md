@@ -1,9 +1,9 @@
 ---
-title: "Hughes at Niman Bowling Club"
+title: "The Hoochers at Nimbin Bowling Club"
 date: 2026-09-12
 time: "7pm"
-venue: "Niman Bowling Club"
+venue: "Nimbin Bowling Club"
 bands:
-  - "Hughes"
+  - "The Hoochers"
 calendar_uid: "2fdmufu0nnq2mc3sibhn8da7mo@google.com"
 ---
