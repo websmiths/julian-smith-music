@@ -8,6 +8,7 @@ era: "2020s"
 region: "Lismore NSW"
 blurb: "A Lismore-area acoustic act gigging at the Lismore Farmers Markets and East Lismore Bowling Club (\"The Easty\"). Lineup and Julian's role to be confirmed."
 links:
+  official: "https://tapestryroad.godaddysites.com/"
   other:
     - label: "Tapestry Road — YouTube"
       url: "https://www.youtube.com/watch?v=tWn3AqaIb80"
