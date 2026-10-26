@@ -1,12 +1,13 @@
 ---
 name: "Al and the Upstarts"
-role: sub
-julianRole: "Substitute / stand-in"
+role: core
+julianRole: "Bass"
 genres: ["rock"]
 accent: blues
 era: "—"
+active: false
 region: "—"
-blurb: "A subbing role; small online footprint. Details pending."
+blurb: "Short-lived rock project. Julian was a core member; dates to be confirmed."
 links:
   facebook: "https://www.facebook.com/AlsUpstarts/"
 image: "/images/al-and-the-upstarts.jpg"
@@ -14,4 +15,4 @@ featured: false
 confirmed: false
 ---
 
-Julian fills in for Al and the Upstarts when needed. The band keeps things mostly off-grid — there's a Facebook page and not much else online.
+A short-lived rock project. Julian was a core member — exact dates to come.
