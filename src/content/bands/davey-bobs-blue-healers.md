@@ -6,6 +6,7 @@ genres: ["old-time", "blues"]
 accent: blues
 era: "2014–"
 yearStart: 2014
+active: false
 region: "Northern Rivers NSW"
 blurb: "Clawhammer-banjo trio — old-time, blues, Leadbelly material. Davey Bob Ramsey on banjo, Julian on double bass, Leroy Steven on drums."
 members:

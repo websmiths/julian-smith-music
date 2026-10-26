@@ -10,6 +10,10 @@ const bands = (await getCollection('bands')).sort((a, b) => {
   const aImg = a.data.image ? 1 : 0;
   const bImg = b.data.image ? 1 : 0;
   if (bImg !== aImg) return bImg - aImg;
+  // Active bands before inactive (within same image group)
+  const aAct = a.data.active ? 1 : 0;
+  const bAct = b.data.active ? 1 : 0;
+  if (bAct !== aAct) return bAct - aAct;
   // Core members before subs/session/video
   const aRole = rolePriority[a.data.role] ?? 0;
   const bRole = rolePriority[b.data.role] ?? 0;
