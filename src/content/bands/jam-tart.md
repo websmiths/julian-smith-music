@@ -1,5 +1,5 @@
 ---
-name: "Jam Tart"
+name: "Jammed Tarts"
 role: core
 julianRole: "Double bass"
 genres: ["jazz"]

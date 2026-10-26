@@ -23,6 +23,7 @@ links:
   other:
     - label: "The Channon Craft Market — band page"
       url: "https://thechannonmarket.org.au/timbuktu/"
+image: "/images/timbuktu-1.jpg"
 featured: false
 confirmed: true
 ---

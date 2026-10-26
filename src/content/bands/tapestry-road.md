@@ -12,6 +12,7 @@ links:
   other:
     - label: "Tapestry Road — YouTube"
       url: "https://www.youtube.com/watch?v=tWn3AqaIb80"
+image: "/images/tapestry-road-1.jpg"
 embeds:
   youtube:
     - id: "tWn3AqaIb80"
