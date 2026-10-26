@@ -23,6 +23,7 @@ links:
   other:
     - label: "Dorrigo Folk & Bluegrass Festival — band page"
       url: "https://www.dorrigofolkbluegrass.com.au/artists/hootenanny-highway/"
+image: "/images/hootenanny-highway-1.jpg"
 featured: false
 confirmed: true
 ---

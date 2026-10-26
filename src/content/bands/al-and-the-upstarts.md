@@ -1,7 +1,7 @@
 ---
 name: "Al and the Upstarts"
 role: core
-julianRole: "Bass"
+julianRole: "Bass, vocals"
 genres: ["rock"]
 accent: blues
 era: "—"
